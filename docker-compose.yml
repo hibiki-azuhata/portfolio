@@ -1,0 +1,22 @@
+version: '3'
+services:
+  scala:
+    image: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
+    tty: true
+    volumes: [".:/work"]
+    ports:
+    - "9000:9000"
+  mysql:
+    container_name: azule_portfolio_mysql
+    build: ./mysql/
+    volumes:
+      - ./mysql/DB:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_DATABASE=azule_portfolio_db
+      - MYSQL_ROOT_PASSWORD=P@ssw0rD
+      - MYSQL_USER=azule_admin
+      - MYSQL_PASSWORD=azule_Passw0rd
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
