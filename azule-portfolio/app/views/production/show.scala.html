@@ -1,0 +1,10 @@
+@import models.Production
+
+@(production: Production)
+
+@main(production.title) {
+    <h3>@production.title</h3>
+    <p>@production.content</p>
+    <img src="@production.thumbnail" alt="thumbnails">
+}
+

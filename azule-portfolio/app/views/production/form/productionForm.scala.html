@@ -1,0 +1,13 @@
+@import service.ProductionService.ProductionData
+@(form: Form[ProductionData])(implicit request: RequestHeader, messages: Messages)
+
+@main("new Production") {
+    @helper.form(action = helper.CSRF(routes.Productions.create()), Symbol("enctype") -> "multipart/form-data") {
+        @helper.inputText(form("title"))
+        @helper.textarea(form("content"))
+        @helper.inputText(form("thumbnail"))
+        <input type="file" name="picture">
+        <input type="submit">
+    }
+}
+
