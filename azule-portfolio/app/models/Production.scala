@@ -22,6 +22,25 @@ object Production extends SkinnyCRUDMapper[Production] {
     thumbnail = rs.get(n.thumbnail)
   )
 
+  def create(
+    title: String,
+    content: String,
+    thumbnail: String,
+    imageIds: Seq[Long],
+    tagIds: Seq[Long]
+  ): Production = {
+    val pId = Production.createWithNamedValues(
+      column.title -> title,
+      column.content -> content,
+      column.thumbnail -> thumbnail
+    )
+    ProductionImage.create(pId, imageIds)
+    ProductionTag.create(pId, tagIds)
+    val imageObjects = if(imageIds.isEmpty) Nil else Image.findAllBy(sqls.in(Image.column.id, imageIds))
+    val tagObjects = if(tagIds.isEmpty) Nil else Tag.findAllBy(sqls.in(Tag.column.id, tagIds))
+    Production(pId, title, content, thumbnail, imageObjects, tagObjects)
+  }
+
   hasManyThrough[Image](
     through = ProductionImage,
     many = Image,

@@ -17,4 +17,17 @@ object Image extends SkinnyCRUDMapper[Image] {
     url = rs.get(n.url),
     alt = rs.get(n.alt)
   )
+
+  def create(url: String, alt: String): Image = {
+    val id = Image.createWithNamedValues(
+      column.url -> url,
+      column.alt -> alt
+    )
+    Image(id, url, alt)
+  }
+
+  def delete(id: Long): Unit = {
+    ProductionImage.deleteBy(sqls.eq(ProductionImage.column.imageId, id))
+    deleteById(id)
+  }
 }

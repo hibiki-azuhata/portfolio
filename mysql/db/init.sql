@@ -14,6 +14,7 @@ CREATE TABLE images (
 CREATE TABLE tags (
   id int(5) unsigned not null auto_increment,
   name nvarchar(30) not null,
+  sort int(5) unsigned not null,
   primary key (id)
 );
 CREATE TABLE production_images (

@@ -3,17 +3,19 @@ package controllers
 import models.Production
 
 import javax.inject._
-import play.api._
 import play.api.mvc._
-import scalikejdbc.DB
-import scalikejdbc.config.DBs
+import service.ProductionService
+import service.ProductionService.ProductionData
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
  */
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class HomeController @Inject()(
+  val controllerComponents: ControllerComponents,
+  val productionService: ProductionService
+) extends BaseController {
 
   /**
    * Create an Action to render an HTML page.
@@ -23,15 +25,18 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
    * a path of `/`.
    */
   def index() = Action { implicit request: Request[AnyContent] =>
-    DBs.setupAll()
-    DB localTx { implicit session =>
-      Production.createWithAttributes(
-        Symbol("value") -> "test",
-        Symbol("count") -> 100
+    productionService.create(
+      ProductionData(
+        None,
+        "test production",
+        "content desu",
+        "https://www.google.com/",
+        Nil,
+        Nil
       )
-      println("===================")
-      println(Production.findAll())
-    }
+    )
+    
+    println(productionService.load)
     Ok(views.html.index())
   }
 }
