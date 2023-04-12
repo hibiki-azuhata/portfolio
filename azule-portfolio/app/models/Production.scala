@@ -16,25 +16,9 @@ case class Production(
   images: Seq[Image] = Nil,
   tags: Seq[Tag] = Nil
 ) {
-  def src: Result = {
-    println(
-      HttpEntity.Streamed(
-        FileIO.fromPath(
-          Paths.get(thumbnail)
-        ),
-        None,
-        Some("image/png")
-      ))
-
-    Result(
-      ResponseHeader(200),
-      HttpEntity.Streamed(
-        FileIO.fromPath(
-          Paths.get(thumbnail)
-        ),
-        None,
-        Some("image/png")
-      )
+  def src = {
+    FileIO.fromPath(
+      Paths.get(thumbnail)
     )
 
   }

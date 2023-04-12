@@ -45,10 +45,10 @@ class Productions @Inject()(
       data => {
         val path = request.body.file("picture").map { pic =>
           val name = Paths.get(pic.filename).getFileName
-          pic.ref.copyTo(Paths.get(s"data/$name"), replace = true)
+          pic.ref.copyTo(Paths.get(s"$name"), replace = true)
         }.get
         println(path.toAbsolutePath.toString)
-        val id = productionService.create(data.copy(thumbnail = s"${path.toAbsolutePath.toString}")).id
+        val id = productionService.create(data.copy(thumbnail = s"${path.toString}")).id
         Redirect(routes.Productions.show(id))
       }
     )
