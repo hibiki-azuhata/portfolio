@@ -1,6 +1,5 @@
 package controllers
 
-import play.api.Play.current
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.I18nSupport
@@ -38,10 +37,6 @@ class Productions @Inject()(
     Ok(views.html.production.show(productionService.load.find(_.id == id).get))
   }
 
-  def showPicture(src: String) = Action { implicit request =>
-    val file = Play
-  }
-
   def create() = Action(parse.multipartFormData) { implicit request =>
     productionForm.bindFromRequest().fold(
       formWithErrors => {
@@ -50,12 +45,10 @@ class Productions @Inject()(
       data => {
         val path = request.body.file("picture").map { pic =>
           val name = Paths.get(pic.filename).getFileName
-          val size = pic.fileSize
-          val contentType = pic.contentType
           pic.ref.copyTo(Paths.get(s"data/$name"), replace = true)
-          pic.ref.
         }.get
-        val id = productionService.create(data.copy(thumbnail = s"./${path.toString}")).id
+        println(path.toAbsolutePath.toString)
+        val id = productionService.create(data.copy(thumbnail = s"${path.toAbsolutePath.toString}")).id
         Redirect(routes.Productions.show(id))
       }
     )

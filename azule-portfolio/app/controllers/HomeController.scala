@@ -24,17 +24,6 @@ class HomeController @Inject()(
    * a path of `/`.
    */
   def index() = Action { implicit request: Request[AnyContent] =>
-    productionService.create(
-      ProductionData(
-        None,
-        "test production",
-        "content desu",
-        "https://www.google.com/",
-        Nil,
-        Nil
-      )
-    )
-    
     println(productionService.load)
     Ok(views.html.index())
   }
