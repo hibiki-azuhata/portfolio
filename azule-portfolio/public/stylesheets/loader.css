@@ -10,14 +10,24 @@
     font-family: 'JetBrains Mono', monospace;
 }
 
-#loader .loader-sentence {
+#loader div {
     font-size: 30px;
     display: inline;
 }
 
-#loader .loader-indent {
-    font-size: 30px;
-    display: inline;
+#loader .loader-line {
+    display: block;
+}
+
+#loader .loader-line-number {
+    background-color: #313335;
+    color: 	#394551;
+	padding-right: 45px;
+	padding-left: 20px;
+    padding-bottom: 2px;
+	border-right: solid 2px;
+	width: 45px;
+	margin-right: 5px;
 }
 
 #loader line {
@@ -39,6 +49,10 @@
 
 #loader .loader-annotated-word {
     color: #bbb529;
+}
+
+#loader .loader-function-word {
+    color: #ffc66d;
 }
 
 #loader > .loader-show-word:not(.loader-hidden):last-of-type::after {

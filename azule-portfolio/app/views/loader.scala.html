@@ -1,61 +1,134 @@
+@import play.twirl.api.HtmlFormat
+
 @()
 
+@lineIndex(i: Int) = {
+    <div class="loader-line-number">@if(i < 10) { &nbsp;@i } else { @i }</div>
+}
+@indent(i: Int) = {
+    <div class="loader-indent">
+        @for(j <- 0 until i) {
+            &nbsp;&nbsp;
+        }
+    </div>
+}
+
+@line(index: Int, indentCount: Int = 0)(content: Html = Html("&nbsp;")) = {
+    <div class="loader-line">
+        @lineIndex(index)
+        @indent(indentCount)
+        @content
+    </div>
+}
+
 <div id="loader">
-    <div>
-        <div class="loader-sentence loader-reserved-word">package</div>
-        <div class="loader-sentence loader-word">azule.project</div>
+    <div class="show-first">
+        @line(1) {
+            <div class="loader-sentence loader-reserved-word">package</div>
+            <div class="loader-sentence loader-word">azule.project</div>
+        }
     </div>
-    <div>&nbsp;</div>
-    <div>
+    @line(2)()
+    @line(3) {
         <div class="loader-sentence loader-reserved-word">import</div>
-        <div class="loader-sentence loader-word">azule.created.Product</div>
-    </div>
-    <div>
+        <div class="loader-sentence loader-word">azule.information.Profile</div>
+    }
+    @line(4) {
         <div class="loader-sentence loader-reserved-word">import</div>
-        <div class="loader-sentence loader-word">azule.studied.Chemistry</div>
-    </div>
-    <div>
+        <div class="loader-sentence loader-word">azule.developed.Product</div>
+    }
+    @line(5) {
         <div class="loader-sentence loader-reserved-word">import</div>
-        <div class="loader-sentence loader-word">azule.studied.Physics</div>
-    </div>
-    <div>
+        <div class="loader-sentence loader-word">azule.using.ProgrammingLanguage</div>
+    }
+    @line(6) {
         <div class="loader-sentence loader-reserved-word">import</div>
-        <div class="loader-sentence loader-word">azule.ate.Umaimono</div>
-    </div>
-    <div>
-        <div class="loader-sentence loader-reserved-word">import</div>
-        <div class="loader-sentence loader-word">azule.somthing.Else</div>
-    </div>
-    <div>&nbsp;</div>
-    <div>
-        <div class="loader-sentence loader-reserved-word">class</div>
-        <div class="loader-sentence loader-word">PortFolioMaker</div>
-        <div class="loader-sentence loader-annotated-word">@@Inject</div>
-        <div class="loader-sentence loader-word">()(</div>
-    </div>
-    <div>
-        <div class="loader-indent">&nbsp;&nbsp;</div>
-        <div class="loader-sentence loader-reserved-word">val</div>
-        <div class="loader-sentence loader-word">cc: ControllerComponents</div>
-    </div>
-    <div>
-        <div class="loader-sentence loader-word">)</div>
+        <div class="loader-sentence loader-word">azule.favorite.Hobby</div>
+    }
+    @line(7)()
+    @line(8) {
+        <div class="loader-sentence loader-annotated-word">@@Introduction</div>
+    }
+    @line(9) {
+        <div class="loader-sentence loader-reserved-word">object</div>
+        <div class="loader-sentence loader-word">HibikiAzuhata</div>
         <div class="loader-sentence loader-reserved-word">extends</div>
-        <div class="loader-sentence loader-word">Product</div>
-    </div>
-    <div>
-        <div class="loader-indent">&nbsp;&nbsp;</div>
+        <div class="loader-sentence loader-word">TokyoTechStudent</div>
+    }
+    @line(10, 1) {
         <div class="loader-sentence loader-reserved-word">with</div>
-        <div class="loader-sentence loader-word">Chemistry</div>
-    </div>
-    <div>
-        <div class="loader-indent">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div class="loader-sentence loader-word">MajorInPhysChemStudent</div>
         <div class="loader-sentence loader-reserved-word">with</div>
-        <div class="loader-sentence loader-word">Physics </div>
-    </div>
-    <div>
-        <div class="loader-indent">&nbsp;&nbsp;</div>
+        <div class="loader-sentence loader-word">LiveInTokyo&nbsp;{</div>
+    }
+    @line(11)()
+    @line(12, 1) {
+        <div class="loader-sentence loader-reserved-word">private</div>
         <div class="loader-sentence loader-reserved-word">def</div>
-        <div class="loader-sentence loader-word">aaaaaaaaaaaaaaa</div>
-    </div>
+        <div class="loader-sentence loader-function-word">getMyHobby</div>
+        <div class="loader-sentence loader-word">:</div>
+        <div class="loader-sentence loader-word">Seq[Hobby]</div>
+        <div class="loader-sentence loader-word">=</div>
+    }
+    @line(13, 2) {
+        <div class="loader-sentence loader-word">Seq(PlayingGame, EatingUmaimono)</div>
+    }
+    @line(14)()
+    @line(15, 1) {
+        <div class="loader-sentence loader-reserved-word">def</div>
+        <div class="loader-sentence loader-function-word">getUsingLang</div>
+        <div class="loader-sentence loader-word">:</div>
+        <div class="loader-sentence loader-word">Seq[ProgrammingLanguage]</div>
+        <div class="loader-sentence loader-word">=</div>
+    }
+
+    @line(15, 2) {
+        <div class="loader-sentence loader-word">Seq(Scala, Java, Python...)</div>
+    }
+
+    @line(16)()
+
+    @line(17, 1) {
+        <div class="loader-sentence loader-reserved-word">def</div>
+        <div class="loader-sentence loader-function-word">getMajorIn</div>
+        <div class="loader-sentence loader-word">:</div>
+        <div class="loader-sentence loader-word">Subject</div>
+        <div class="loader-sentence loader-word">=</div>
+    }
+
+    @line(18, 2) {
+        <div class="loader-sentence loader-word">PhysicChemistory</div>
+    }
+
+    @line(19)()
+
+    @line(20, 1) {
+    <div class="loader-sentence loader-reserved-word">def</div>
+    <div class="loader-sentence loader-function-word">getDevelopedProduct</div>
+    <div class="loader-sentence loader-word">:</div>
+    <div class="loader-sentence loader-word">Seq[Product]</div>
+    <div class="loader-sentence loader-word">=</div>
+    }
+
+    @line(21, 2) {
+        <div class="loader-sentence loader-word">Seq(</div>
+        <div class="loader-sentence loader-reserved-word">this</div>
+        <div class="loader-sentence loader-word">, ...)</div>
+    }
+
+    @line(22)()
+
+    @line(23)()
+
+    @line(24)()
+
+    @line(25)()
+
+    @line(26)()
+
+    @line(27)()
+
+    @line(28) {
+        <div class="loader-sentence loader-word">}</div>
+    }
 </div>
