@@ -1,0 +1,34 @@
+@mixin base-content {
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+.main-content {
+    @include base-content;
+    margin-top: 50px;
+    @media (min-width: 768px) {
+        margin-top: 0px;
+        width: calc(100% - 200px);
+    }
+    position: absolute;
+    display: inline-block;
+}
+
+.side-menu {
+    @include base-content;
+    display: block;
+    height: 50px;
+    position: fixed;
+    @media (min-width: 768px) {
+        height: 100%;
+        width: 200px;
+        display: inline-block;
+    }
+    background-color: red;
+    z-index: 200;
+    right: 0;
+}
+
+.main-container {
+    width: 100%;
+}

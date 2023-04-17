@@ -4,11 +4,15 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.index()
+GET     /                           controllers.IntroductionController.index()
 
 POST    /createProduction           controllers.Productions.create()
+GET     /image                      controllers.Productions.sendFile(filename: String)
 GET     /newProduction              controllers.Productions.newProduction()
 GET     /showProduction/:id         controllers.Productions.show(id: Long)
+
+GET     /login                      controllers.UserController.loginPage()
+POST    /login                      controllers.UserController.login()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

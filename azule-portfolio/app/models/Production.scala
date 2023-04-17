@@ -1,12 +1,7 @@
 package models
 
-import akka.stream.scaladsl.FileIO
-import play.api.http.HttpEntity
-import play.api.mvc.{ResponseHeader, Result}
 import scalikejdbc._
 import skinny.orm.SkinnyCRUDMapper
-
-import java.nio.file.{Files, Paths}
 
 case class Production(
   id: Long,
@@ -15,14 +10,7 @@ case class Production(
   thumbnail: String,
   images: Seq[Image] = Nil,
   tags: Seq[Tag] = Nil
-) {
-  def src = {
-    FileIO.fromPath(
-      Paths.get(thumbnail)
-    )
-
-  }
-}
+)
 
 object Production extends SkinnyCRUDMapper[Production] {
   override lazy val tableName = "productions"

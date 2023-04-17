@@ -25,3 +25,10 @@ CREATE TABLE production_tags (
   production_id int(5) unsigned not null,
   tag_id int(5) unsigned not null
 );
+
+CREATE TABLE users (
+  id int(5) unsigned not null auto_increment,
+  name nvarchar(15) not null,
+  password nvarchar(30) not null,
+  primary key (id)
+);

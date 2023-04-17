@@ -7,8 +7,12 @@ import service.ProductionService.ProductionData
 
 class ProductionServiceImpl extends ProductionService {
 
-  override def create(data: ProductionData): Production =
-    Production.create(data.title, data.content, data.thumbnail, data.imageIds, data.tagIds)
+  override def create(data: ProductionData): Production = {
+    val imageIds = data.images.map { i =>
+      Image.create(i.url, i.alt).id
+    }
+    Production.create(data.title, data.content, data.thumbnail, imageIds, data.tagIds)
+  }
 
   override def update(data: ProductionData): Unit = {
     val column = Production.column
@@ -22,11 +26,11 @@ class ProductionServiceImpl extends ProductionService {
         ProductionTag.deleteBy(sqls.in(ProductionTag.column.tagId, base.tags.map(_.id)))
         ProductionImage.deleteBy(sqls.in(ProductionImage.column.imageId, base.images.map(_.id)))
 
-        val oldImageIds = base.images.map(_.id).diff(data.imageIds)
-        Image.deleteBy(sqls.in(Image.column.id, oldImageIds))
+        //val oldImageIds = base.images.map(_.id).diff(data.imageIds)
+        //Image.deleteBy(sqls.in(Image.column.id, oldImageIds))
       }
       ProductionTag.create(id, data.tagIds)
-      ProductionImage.create(id, data.imageIds)
+      //ProductionImage.create(id, data.imageIds)
     }
   }
 
