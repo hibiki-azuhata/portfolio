@@ -1,0 +1,214 @@
+html,body {
+    width: 100%;
+    height: 100%;
+    background-color: #007b7b!important;
+}
+
+@mixin windowFrame($lineWidth, $color) {
+    background-color: $color;
+    border-top: solid $lineWidth white;
+    border-left: solid $lineWidth white;
+    border-right: solid $lineWidth black;
+    border-bottom: solid $lineWidth black;
+}
+
+@mixin windowFrameR($lineWidth, $color) {
+    background-color: $color;
+    border-top: solid $lineWidth black;
+    border-left: solid $lineWidth black;
+    border-right: solid $lineWidth white;
+    border-bottom: solid $lineWidth white;
+}
+
+.window {
+    position: fixed;
+    @include windowFrame(3px, #bdbdbd);
+}
+
+.window-hidden {
+    display: none;
+}
+
+.window-title {
+    position: relative;
+    top: 3px;
+    left: 3px;
+    width: calc(100% - 6px);
+    height: 32px;
+    background-color: #00188c;
+    color: white;
+    line-height: 32px;
+    padding-left: 6px;
+    font-size: 20px;
+}
+
+.window-title-text {
+    float: left;
+}
+
+.window-title-buttons {
+    float: right;
+    position: relative;
+    right: 3px;
+    bottom: 1px;
+    color: black;
+}
+
+.window-title-page {
+    position: relative;
+    float: left;
+    margin-right: 4px;
+}
+
+.window-button-taskbar,.window-button-full-window,.window-button-close {
+    @include windowFrame(2px, #bdbdbd);
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    text-align: center;
+    padding: 0;
+    line-height: 18px;
+    font-size: 18px;
+}
+
+.window-button-taskbar {
+    position: relative;
+    left: 6px;
+}
+
+.window-menu {
+    width: calc(100% - 6px);
+    height: 32px;
+    color: black;
+}
+
+.window-menu ul {
+    position: relative;
+    height: 100%;
+    top: 1px;
+    left: 3px;
+    padding: 4px 0;
+    list-style: none;
+}
+
+.window-menu li {
+    float: left;
+    padding: 0 8px;
+}
+
+.window-menu li:active {
+    background-color: #00188c;
+    color: white;
+}
+
+.main-window-content {
+    position: relative;
+    left: 3px;
+    width: calc(100% - 6px);
+    height: calc(100% - 67px);
+    @include windowFrameR(2px, white)
+    overflow: auto;
+}
+
+.start-menu {
+    @include windowFrame(2px, #bdbdbd);
+    position: fixed;
+    left: 0px;
+    bottom: 28px;
+    width: 300px;
+    height: 400px;
+    z-index: 101;
+}
+
+.task-bar {
+    position: fixed;
+    z-index: 100;
+    bottom: 0;
+    display: block;
+    width: 100%;
+    height: 32px;
+    border-top: solid 3px white;
+    background-color: #bdbdbd;
+}
+
+.task-bar > div {
+    display: inline-block;
+}
+
+.task-bar-start {
+    position: relative;
+    left: 2px;
+    text-align: center;
+    padding: 0 4px;
+    @include windowFrame(2px, #bdbdbd)
+}
+
+.task-bar-start > i {
+    color: #853250;
+}
+
+.task-bar-app {
+    @include windowFrameR(2px, #bdbdbd)
+    position: relative;
+    left: 14px;
+    width: 180px;
+    padding-left: 4px;
+    text-align: left;
+}
+
+.task-bar-active {
+    @include windowFrame(2px, #bdbdbd)
+}
+
+.window-button:active {
+    @include windowFrameR(2px, #bdbdbd)
+}
+
+.window-button-clicked {
+    @include windowFrameR(2px, #bdbdbd)
+}
+
+.main-display-icons {
+    position: relative;
+    top: 10px;
+}
+
+.display-icon {
+    width: 120px;
+    text-align: center;
+}
+
+.display-icon-title {
+    color: white;
+}
+
+.test-square {
+    display: inline-block;
+    background-color: red;
+    height: 100px;
+    width: 100px;
+}
+
+.main-window {
+    z-index: 1;
+    top: 8%;
+    right: 5%;
+    width: 80%;
+    height: 80%;
+}
+
+.sub-window {
+    z-index: 2;
+    top: 4%;
+    right: 8%;
+    width: 60%;
+    height: 60%;
+}
+
+.subsub-window {
+    z-index: 3;
+    top: 6%;
+    right: 1%;
+    width: 40%;
+    height: 40%;
+}

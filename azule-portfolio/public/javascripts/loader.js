@@ -9,7 +9,10 @@ function fadeOut() {
                 value: 0,
                 easing: 'linear'
             },
-            duration: 400
+            duration: 400,
+            complete: () => {
+                $('#loader').remove();
+            }
         });
     }
 }
@@ -31,7 +34,7 @@ $(function(){
 
     var firstWords = $('#loader .loader-first-word')
     firstWords.each(function(i){
-       $(this).delay(80 * i).queue(function(){
+       $(this).delay(60 * i).queue(function(){
            $(this).removeClass('loader-hidden').dequeue();
        });
     });
@@ -39,15 +42,15 @@ $(function(){
     setTimeout(function(){
         var showWords = $('#loader .loader-show-word');
         showWords.each(function(i){
-            $(this).delay(3 * i).queue(function(){
+            $(this).delay(2 * i).queue(function(){
                 $(this).removeClass('loader-hidden').dequeue();
             });
         });
         setTimeout(function(){
             showFinished = true;
             fadeOut();
-        }, showWords.length * 3 - 120);
-    }, firstWords.length * 80 + 400);
+        }, showWords.length * 2 - 120);
+    }, firstWords.length * 60 + 300);
 });
 
 $(window).on('load', function() {

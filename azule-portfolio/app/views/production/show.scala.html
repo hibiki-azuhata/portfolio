@@ -1,6 +1,6 @@
 @import models.Production
 
-@(production: Production)
+@(production: Production)(implicit req: RequestHeader)
 
 @base(production.title) {
     <h3>@production.title</h3>

@@ -8,6 +8,7 @@
     margin: auto;
     line-height: 1.35;
     font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
 }
 
 #loader div {

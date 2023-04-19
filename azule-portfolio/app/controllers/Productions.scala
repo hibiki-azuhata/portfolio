@@ -4,7 +4,7 @@ import module.PortfolioModule.IMAGE_PATH
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.I18nSupport
-import play.api.mvc.{BaseController, ControllerComponents}
+import play.api.mvc.ControllerComponents
 import service.ProductionService
 import service.ProductionService._
 
@@ -14,9 +14,8 @@ import scala.concurrent.ExecutionContext
 
 class Productions @Inject()(
   authAction: AuthAction,
-  val productionService: ProductionService,
-  implicit val cc: ControllerComponents
-)(implicit val ec: ExecutionContext) extends Controller with I18nSupport {
+  val productionService: ProductionService
+)(implicit val cc: ControllerComponents) extends Controller with I18nSupport {
 
   private def productionForm = Form(
     mapping(
@@ -63,6 +62,7 @@ class Productions @Inject()(
   }
 
   def sendFile(filename: String) = authAction { implicit request =>
+    implicit val ec: ExecutionContext = cc.executionContext
     Ok.sendFile(
       content = new java.io.File(filename),
       inline = true

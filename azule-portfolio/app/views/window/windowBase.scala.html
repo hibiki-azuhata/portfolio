@@ -1,0 +1,28 @@
+@(title: String, windowClass: String)(menu: Html)(content: Html)
+
+<div class="window @windowClass">
+    <div class="window-title">
+        <div class="window-title-text">
+            <i class="bi bi-folder-fill"></i> @title
+        </div>
+        <div class="window-title-buttons">
+            <div class="window-title-page">
+                <button class="window-button-taskbar window-button">
+                    <i class="bi bi-caret-down-fill"></i>
+                </button>
+                <button class="window-button-full-window window-button">
+                    <i class="bi bi-window-fullscreen"></i>
+                </button>
+            </div>
+            <button class="window-button-close window-button">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+    </div>
+    <div class="window-menu">
+        @menu
+    </div>
+    <div class="main-window-content">
+        @content
+    </div>
+</div>
