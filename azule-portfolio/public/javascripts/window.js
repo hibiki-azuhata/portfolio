@@ -30,6 +30,8 @@ function isBottom(elem) {
 }
 
 function loadWindow(window) {
+    var taskId = '#task-bar-' + window.attr('id');
+
     window.draggable({
         handle: '.window-title'
     });
@@ -41,6 +43,7 @@ function loadWindow(window) {
     });
     window.find('.window-button-close').click(function(){
         searchParentWindow($(this)).remove();
+        $(taskId).remove();
     });
     window.find('.window-button-full-window').click(function(){
         var window = searchParentWindow($(this));
@@ -51,6 +54,17 @@ function loadWindow(window) {
     });
     window.find('.window-button-taskbar').click(function(){
         searchParentWindow($(this)).addClass('window-hidden');
+        $(taskId).addClass('task-bar-hidden-window');
+    });
+    $(taskId).click(function(){
+        var task = $(this);
+        if(task.hasClass('task-bar-hidden-window')) {
+            window.removeClass('window-hidden');
+            task.removeClass('task-bar-hidden-window');
+        } else {
+            window.addClass('window-hidden');
+            task.addClass('task-bar-hidden-window');
+        }
     });
 
     $('#window-manual > .main-window-content').off('scroll');
@@ -82,6 +96,10 @@ function loadWindow(window) {
     }));
 }
 
+function taskElement(windowId, icon, windowName) {
+    return '<button id="task-bar-' + windowId + '" class="task-bar-app"> <i class="bi ' + icon + '"></i> ' + windowName + ' </button>'
+}
+
 function showWindow(data) {
     var lastAddedWindow = $('.window:last-of-type');
     $('.main-windows').append(data);
@@ -94,9 +112,13 @@ function showWindow(data) {
         addWindow.css('top', 'calc(' + lastAddedWindow.css('top')  + ' + 40px)');
         addWindow.css('left', 'calc(' + lastAddedWindow.css('left')  + ' + 40px)');
     }
+    $('.task-bar-content').append(taskElement(addWindow.attr('id'), 'bi-folder-fill', addWindow.find('.window-title-text').text()));
     loadWindow(addWindow);
 }
 
 $(function(){
+    $('.window').each(function(){
+        $('.task-bar-content').append(taskElement($(this).attr('id'), 'bi-folder-fill', $(this).find('.window-title-text').text()));
+    });
     loadWindow($('.window'));
 });

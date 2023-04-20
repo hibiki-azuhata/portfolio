@@ -132,11 +132,14 @@ html,body {
     background-color: #bdbdbd;
 }
 
-.task-bar > div {
+.task-bar-content {
     display: inline-block;
+    position: relative;
+    left: 14px;
 }
 
 .task-bar-start {
+    display: inline-block;
     position: relative;
     left: 2px;
     text-align: center;
@@ -150,14 +153,16 @@ html,body {
 
 .task-bar-app {
     @include windowFrameR(2px, #bdbdbd)
+    display: inline-block;
     position: relative;
     left: 14px;
     width: 180px;
     padding-left: 4px;
     text-align: left;
+    margin-left: 14px;
 }
 
-.task-bar-active {
+.task-bar-hidden-window {
     @include windowFrame(2px, #bdbdbd)
 }
 
