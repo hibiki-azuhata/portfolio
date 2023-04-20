@@ -1,0 +1,9 @@
+@()(implicit req: RequestHeader)
+
+@helper.javascriptRouter("jsRoutes")(
+    routes.javascript.IntroductionController.index,
+    routes.javascript.IntroductionController.manual,
+    routes.javascript.IntroductionController.work,
+    routes.javascript.IntroductionController.about,
+    routes.javascript.UserController.loginPage
+)

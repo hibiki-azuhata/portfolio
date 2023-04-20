@@ -1,6 +1,6 @@
-@(title: String, windowClass: String)(menu: Html)(content: Html)
+@(title: String, windowClass: String, windowId: String)(menu: Html)(content: Html)
 
-<div class="window @windowClass">
+<div id="@windowId" class="window @windowClass">
     <div class="window-title">
         <div class="window-title-text">
             <i class="bi bi-folder-fill"></i> @title

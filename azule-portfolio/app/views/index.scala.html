@@ -1,5 +1,7 @@
+@import window._
+
 @()(implicit req: RequestHeader)
 
 @base("Welcome to Play", true) {
-  <h1>Welcome to Play!</h1>
+  @{page.manual()}
 }

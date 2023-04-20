@@ -10,7 +10,18 @@ class IntroductionController @Inject()(
 ) extends Controller {
 
   def index() = Action { implicit request: Request[AnyContent] =>
-    println(productionService.load)
     Ok(views.html.index())
+  }
+
+  def manual() = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.page.manual())
+  }
+
+  def work() = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.page.work())
+  }
+
+  def about() = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.page.about())
   }
 }

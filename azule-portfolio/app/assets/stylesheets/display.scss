@@ -22,6 +22,7 @@ html,body {
 
 .window {
     position: fixed;
+    z-index: 1;
     @include windowFrame(3px, #bdbdbd);
 }
 
@@ -190,25 +191,22 @@ html,body {
 }
 
 .main-window {
-    z-index: 1;
-    top: 8%;
-    right: 5%;
+    top: calc(8%);
+    left: calc(5%);
     width: 80%;
     height: 80%;
 }
 
 .sub-window {
-    z-index: 2;
-    top: 4%;
-    right: 8%;
+    top: calc(4%);
+    left: calc(3%);
     width: 60%;
     height: 60%;
 }
 
 .subsub-window {
-    z-index: 3;
-    top: 6%;
-    right: 1%;
+    top: calc(6%);
+    left: calc(1%);
     width: 40%;
     height: 40%;
 }
