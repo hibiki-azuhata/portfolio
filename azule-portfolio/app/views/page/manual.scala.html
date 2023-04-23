@@ -1,13 +1,13 @@
 @import window._
 
-@()(implicit req: RequestHeader)
+@()(implicit req: RequestHeader, messages: Messages)
 
-@windowBase("はじめに", "main-window", "window-manual"){
+@windowBase(Messages("window.name.manual"), "main-window", "window-manual"){
 <ul>
-    <li class="window-menu-content">ファイル(<u>F</u>)</li>
-    <li class="window-menu-content">編集(<u>E</u>)</li>
-    <li class="window-menu-content">検索(<u>V</u>)</li>
-    <li class="window-menu-content">ヘルプ(<u>H</u>)</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.search"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.help"))</li>
 </ul>
 } {
     <h3>このサイトについて</h3>

@@ -1,7 +1,7 @@
 @import window._
 
-@()(implicit req: RequestHeader)
+@()(implicit req: RequestHeader, messages: Messages)
 
-@base("Welcome to Play", true) {
+@base(Messages("portfolio.name"), true) {
   @{page.manual()}
 }

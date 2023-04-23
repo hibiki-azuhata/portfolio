@@ -21,7 +21,7 @@ html,body {
 }
 
 .window {
-    position: fixed;
+    position: fixed !important;
     z-index: 1;
     @include windowFrame(3px, #bdbdbd);
 }
@@ -112,7 +112,7 @@ html,body {
 }
 
 .start-menu {
-    @include windowFrame(2px, #bdbdbd);
+    @include windowFrame(2px, #c0c0c0);
     position: fixed;
     left: 0px;
     bottom: 28px;
@@ -174,6 +174,13 @@ html,body {
     @include windowFrameR(2px, #bdbdbd)
 }
 
+.window-fullscreen {
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: calc(100% - 32px) !important;
+}
+
 .main-display-icons {
     position: relative;
     top: 10px;
@@ -196,10 +203,10 @@ html,body {
 }
 
 .main-window {
-    top: calc(8%);
-    left: calc(5%);
-    width: 80%;
-    height: 80%;
+    top: 20px;
+    left: 140px;
+    width: 75%;
+    height: 75%;
 }
 
 .sub-window {

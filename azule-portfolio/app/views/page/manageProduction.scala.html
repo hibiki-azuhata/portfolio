@@ -1,0 +1,24 @@
+@import window._
+@import models.Production
+
+@(prods: Seq[Production])(implicit req: RequestHeader, messages: Messages)
+
+@windowBase(Messages("window.name.manageProduction"), "main-window", "window-manage-production"){
+<ul>
+    <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.search"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.help"))</li>
+</ul>
+} {
+    <div id="new-production" class="manage-production-item" >
+        <div class="test-square"></div>
+        <p>@Messages("")</p>
+    </div>
+    @for(p <- prods) {
+        <div id="production-@{p.id}" class="manage-production-item" >
+            <img src="@routes.Productions.sendFile(p.thumbnail)" alt="thumbnail_@{p.title}" width="100px" height="100px">
+            <p>@{p.title}</p>
+        </div>
+    }
+}

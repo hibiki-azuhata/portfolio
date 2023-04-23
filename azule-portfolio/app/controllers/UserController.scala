@@ -1,31 +1,31 @@
 package controllers
 
 import controllers.AuthAction.USER_NAME
-import play.api.i18n.I18nSupport
-import play.api.mvc.{BaseController, ControllerComponents}
+import play.api.mvc.ControllerComponents
 import service.UserService
 
 import javax.inject.Inject
 
 class UserController @Inject()(
   userService: UserService,
+  authAction: AuthAction,
   implicit val cc: ControllerComponents
 ) extends Controller with LoginSupport {
-
-  def loginPage() = Action { implicit request =>
-    Ok(views.html.auth.login(loginForm))
-  }
   def login() = Action { implicit request =>
     loginForm.bindFromRequest().fold(
-      _ => BadRequest(views.html.auth.login(loginForm)),
+      _ => BadRequest(views.html.start.login(loginForm)),
       data => {
         userService.authenticate(data).fold {
-          Unauthorized(views.html.auth.login(loginForm))
+          Unauthorized(views.html.start.login(loginForm))
         } { name =>
-          Redirect(routes.Productions.newProduction()).withSession(USER_NAME -> name)
+          Ok(views.html.page.manual()).withSession(USER_NAME -> name)
         }
       }
     )
+  }
+
+  def control() = authAction { implicit request =>
+    Ok(views.html.start.control())
   }
 
 }

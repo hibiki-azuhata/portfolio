@@ -1,10 +1,12 @@
+@import helper._
 @import service.UserService.LoginData
 @(form: Form[LoginData])(implicit request: RequestHeader, messages: Messages)
 
 
-@helper.form(action = helper.CSRF(routes.UserController.login())) {
+@helper.form(action = routes.UserController.login(), Symbol("id") -> "login-form") {
+    @CSRF.formField
     @helper.inputText(form("name"))
     @helper.inputPassword(form("password"))
-    <input type="submit">
+    <input id="login-page-submit" type="submit">
 }
 

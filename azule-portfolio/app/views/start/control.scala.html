@@ -1,0 +1,49 @@
+@import helper._
+@()(implicit request: RequestHeader, messages: Messages)
+
+<div id="start-menu-title">
+    <div class="start-menu-title-content">
+        @Messages("portfolio.name")
+    </div>
+</div>
+<div id="icon-manageProduction" class="start-menu-content">
+    <div class="start-menu-icon">
+        <div class="test-square-menu"></div>
+    </div>
+    <div class="start-menu-content-title">
+        @Messages("window.name.manageProduction")
+    </div>
+</div>
+<div id="icon-managePage" class="start-menu-content">
+    <div class="start-menu-icon">
+        <div class="test-square-menu"></div>
+    </div>
+    <div class="start-menu-content-title">
+        @Messages("window.name.managePage")
+    </div>
+</div>
+<div id="icon-manageUser" class="start-menu-content">
+    <div class="start-menu-icon">
+        <div class="test-square-menu"></div>
+    </div>
+    <div class="start-menu-content-title">
+        @Messages("window.name.manageUser")
+    </div>
+</div>
+<div id="icon-manageBlog" class="start-menu-content start-menu-bottom">
+    <div class="start-menu-icon">
+        <div class="test-square-menu"></div>
+    </div>
+    <div class="start-menu-content-title">
+        @Messages("window.name.manageBlog")
+    </div>
+</div>
+<div class="start-menu-content start-menu-logout">
+    <div class="start-menu-icon">
+        <div class="test-square-menu"></div>
+    </div>
+    <div class="start-menu-content-title">
+        @Messages("startMenu.logout")
+    </div>
+</div>
+

@@ -15,7 +15,7 @@ class AuthAction @Inject()(val cc: ControllerComponents, parsers: PlayBodyParser
     implicit val req: Request[T] = request
     req.session.get(USER_NAME) match {
       case Some(_) => block(request)
-      case None => Future(Unauthorized(views.html.auth.login(loginForm)))
+      case None => Future(Unauthorized(views.html.start.login(loginForm)))
     }
   }
 

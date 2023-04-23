@@ -27,7 +27,7 @@ class Productions @Inject()(
   )
 
   def index() = authAction { implicit request =>
-    Ok(views.html.index())
+    Ok(views.html.page.manageProduction(productionService.load))
   }
 
   def newProduction() = authAction { implicit request =>

@@ -1,6 +1,6 @@
-@(title: String)(icon: Html)
+@(iconId: String, title: String)(icon: Html)
 
-<div class="display-icon">
+<div id="icon-@iconId" class="display-icon">
     @icon
     <p class="display-icon-title">@title</p>
 </div>

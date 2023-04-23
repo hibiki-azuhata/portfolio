@@ -5,13 +5,14 @@ GET     /work                       controllers.IntroductionController.work()
 GET     /about                      controllers.IntroductionController.about()
 
 # Productions
+GET     /productions/manage         controllers.Productions.index()
 POST    /createProduction           controllers.Productions.create()
 GET     /image                      controllers.Productions.sendFile(filename: String)
 GET     /newProduction              controllers.Productions.newProduction()
 GET     /showProduction/:id         controllers.Productions.show(id: Long)
 
 # UserController
-GET     /login                      controllers.UserController.loginPage()
+GET     /login                      controllers.UserController.control()
 POST    /login                      controllers.UserController.login()
 
 # Assets

@@ -1,1 +1,18 @@
-# https://www.playframework.com/documentation/latest/ScalaI18N
+portfolio.name=あずのポートフォリオ
+
+window.name.manual=はじめに
+window.name.work=制作物
+window.name.about=プロフィール
+window.name.blog=ブログ
+window.name.manageProduction=制作物管理
+window.name.managePage=ページ管理
+window.name.manageUser=ユーザー管理
+window.name.manageBlog=ブログ管理
+
+window.menu.file=ファイル(<u>F</u>)
+window.menu.edit=編集(<u>E</u>)
+window.menu.search=検索(<u>V</u>)
+window.menu.help=ヘルプ(<u>H</u>)
+
+startMenu.login=ログイン
+startMenu.logout=ログアウト
