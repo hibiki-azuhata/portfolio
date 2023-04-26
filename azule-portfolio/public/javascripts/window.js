@@ -9,17 +9,14 @@ function registerLoginForm() {
         e.preventDefault();
         var form = $(this);
         var btn = form.find('#login-page-submit');
-        console.log(form.serialize());
         jsRoutes.controllers.UserController.login().ajax({
             method: 'POST',
             data: form.serialize(),
             success: function(data) {
-                console.log(data);
-                btn.attr('disabled', true);
+                closeStartMenu();
             },
             error: function(data) {
-                console.log(data);
-                btn.attr('disabled', false);
+                console.log("error shori");
             }
         });
     });
@@ -143,6 +140,7 @@ function registerDblclick(id, url) {
                 task.removeClass('task-bar-hidden-window');
             }
         }
+        closeStartMenu();
     });
 }
 
@@ -155,6 +153,7 @@ $(function(){
                 success: function(data) {
                     insertStartMenu(data);
                     registerDblclick('manageProduction', jsRoutes.controllers.Productions.index());
+                    registerDblclick('logout', jsRoutes.controllers.UserController.logout());
                 },
                 error: function(data) {
                     insertStartMenu(data.responseText);
@@ -167,7 +166,7 @@ $(function(){
     });
 
     $(document).click(function(e){
-        if(!$('.start-menu').hasClass('window-hidden') && !$(e.target).closest('.start-menu')[0] && !$(this).hasClass('task-bar-start') && $(this).hasClass('start-menu-content')) {
+        if(!$('.start-menu').hasClass('window-hidden') && !$(e.target).closest('.start-menu')[0] && !$(this).hasClass('task-bar-start')) {
             closeStartMenu();
         }
     });

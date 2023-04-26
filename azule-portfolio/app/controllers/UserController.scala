@@ -1,6 +1,7 @@
 package controllers
 
 import controllers.AuthAction.USER_NAME
+import play.api.i18n.Messages
 import play.api.mvc.ControllerComponents
 import service.UserService
 
@@ -22,6 +23,14 @@ class UserController @Inject()(
         }
       }
     )
+  }
+
+  def logout() = Action { implicit request =>
+    request.session.get(USER_NAME).fold {
+      BadRequest(Messages("logout.error"))
+    } { username =>
+      Ok(Messages("logout.success", username)).removingFromSession(USER_NAME)
+    }
   }
 
   def control() = authAction { implicit request =>

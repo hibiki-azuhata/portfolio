@@ -14,6 +14,7 @@ GET     /showProduction/:id         controllers.Productions.show(id: Long)
 # UserController
 GET     /login                      controllers.UserController.control()
 POST    /login                      controllers.UserController.login()
+POST    /logout                     controllers.UserController.logout()
 
 # Assets
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

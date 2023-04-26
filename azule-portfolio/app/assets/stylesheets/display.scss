@@ -20,6 +20,10 @@ html,body {
     border-bottom: solid $lineWidth white;
 }
 
+@mixin button {
+    cursor: pointer;
+}
+
 .window {
     position: fixed !important;
     z-index: 1;
@@ -189,10 +193,23 @@ html,body {
 .display-icon {
     width: 120px;
     text-align: center;
+    @include button
 }
 
 .display-icon-title {
     color: white;
+}
+
+.start-menu-content {
+    @include button
+}
+
+.manage-production-item {
+    float: left;
+    width: 120px;
+    text-align: center;
+    margin: 10px;
+    @include button
 }
 
 .test-square {
