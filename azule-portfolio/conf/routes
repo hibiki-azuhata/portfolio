@@ -13,6 +13,7 @@ GET     /productions/:id            controllers.Productions.show(id: Long)
 
 # Images
 POST    /image/upload               controllers.Images.upload()
+GET     /image/get                  controllers.Images.get(filename: String)
 
 # UserController
 GET     /login                      controllers.UserController.control()

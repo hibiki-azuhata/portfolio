@@ -23,19 +23,17 @@ class Images @Inject()(
     println(request)
     imageForm.bindFromRequest().fold(
       _ => {
-        println("this")
-        BadRequest(Messages("image.upload.failed.noAlt"))
+        BadRequest(s"""{"success": false, "file":"", "message":"image.upload.noAlt"}""")
       },
       data => {
+        val filename = f"${data}_image.png"
         request.body.file("image").map { image =>
-          image.ref.copyTo(Paths.get(s"$IMAGE_PATH/${data}_image.png"), replace = true).toString
+          image.ref.copyTo(Paths.get(s"$IMAGE_PATH/$filename"), replace = true).toString
         }.fold {
-          println("is")
-          BadRequest(Messages("image.upload.failed"))
+          BadRequest(s"""{"success": false, "file":"", "message":"image.upload.failed"}""")
         } { imagePath =>
-          println("succss")
           imageService.create(imagePath, data)
-          Ok(Messages("image.upload.success"))
+          Ok(s"""{"success": true, "file":"${routes.Images.get(filename).url}", "message":"image.upload.success"}""")
         }
       }
     )
@@ -45,7 +43,7 @@ class Images @Inject()(
   def get(filename: String) = authAction { implicit request =>
     implicit val ec: ExecutionContext = cc.executionContext
     Ok.sendFile(
-      content = new java.io.File(filename),
+      content = new java.io.File(s"$IMAGE_PATH/$filename"),
       inline = true
     )
   }

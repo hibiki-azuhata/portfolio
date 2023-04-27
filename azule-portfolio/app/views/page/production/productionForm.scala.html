@@ -45,8 +45,12 @@
                         serverPath: "@helper.CSRF(routes.Images.upload()).url",
                         fileFieldName: 'image',
                         success: function (data, trumbowyg, $modal, values) {
-                            data.append('<img src="' + data.file + '" alt="' + data.alt + '>');
-                            console.log($modal);
+                            console.log(data);
+                            $('.new-production-content').trumbowyg('html', '<img src="' + data.file + '" alt="' + data.alt + '">');
+                            $modal.trumbowyg('closeModal');
+                        },
+                        error: function() {
+                            console.log("test");
                         }
                     }
                 }
