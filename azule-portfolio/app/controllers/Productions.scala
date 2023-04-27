@@ -3,7 +3,6 @@ package controllers
 import module.PortfolioModule.IMAGE_PATH
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.i18n.I18nSupport
 import play.api.mvc.ControllerComponents
 import service.ProductionService
 import service.ProductionService._
@@ -15,7 +14,7 @@ import scala.concurrent.ExecutionContext
 class Productions @Inject()(
   authAction: AuthAction,
   val productionService: ProductionService
-)(implicit val cc: ControllerComponents) extends Controller with I18nSupport {
+)(implicit val cc: ControllerComponents) extends Controller {
 
   private def productionForm = Form(
     mapping(
@@ -30,8 +29,8 @@ class Productions @Inject()(
     Ok(views.html.page.manageProduction(productionService.load))
   }
 
-  def newProduction() = authAction { implicit request =>
-    Ok(views.html.production.form.productionForm(productionForm))
+  def add() = authAction { implicit request =>
+    Ok(views.html.page.production.productionForm(productionForm, routes.Images.upload()))
   }
 
   def show(id: Long) = authAction { implicit request =>

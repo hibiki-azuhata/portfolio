@@ -16,7 +16,24 @@ function registerLoginForm() {
                 closeStartMenu();
             },
             error: function(data) {
-                console.log("error shori");
+                $('.start-menu').empty().append(data);
+            }
+        });
+    });
+}
+
+function registerLogoutForm() {
+    $('#icon-logout').dblclick(function(e) {
+        e.preventDefault();
+        var form = $('#logout-form');
+        jsRoutes.controllers.UserController.logout().ajax({
+            method: 'POST',
+            data: form.serialize(),
+            success: function(data) {
+                closeStartMenu();
+            },
+            error: function(data) {
+                $('.start-menu').empty().append(data);
             }
         });
     });
@@ -120,12 +137,27 @@ function showWindow(data) {
     loadWindow(addWindow);
 }
 
-function registerDblclick(id, url) {
+function registerManageProduction() {
+    $('#new-production').dblclick(function(){
+        jsRoutes.controllers.Productions.add().ajax({
+            method: 'GET',
+            success: function(data) {
+                showWindow(data);
+            },
+            error: function(data) {
+                showWindow(data);
+            }
+        });
+    });
+}
+
+function registerDblclick(id, url, registerAction) {
     $('#icon-' + id).dblclick(function(){
         if(!$('#window-' + id)[0]) {
             url.ajax({
                 success: function(data) {
                     showWindow(data);
+                    registerAction();
                 },
                 error: function(data) {
                     showWindow(data);
@@ -152,8 +184,8 @@ $(function(){
                 method: 'GET',
                 success: function(data) {
                     insertStartMenu(data);
-                    registerDblclick('manageProduction', jsRoutes.controllers.Productions.index());
-                    registerDblclick('logout', jsRoutes.controllers.UserController.logout());
+                    registerDblclick('manageProduction', jsRoutes.controllers.Productions.index(), registerManageProduction);
+                    registerLogoutForm()
                 },
                 error: function(data) {
                     insertStartMenu(data.responseText);

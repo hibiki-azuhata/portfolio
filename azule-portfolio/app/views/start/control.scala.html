@@ -45,5 +45,8 @@
     <div class="start-menu-content-title">
         @Messages("startMenu.logout")
     </div>
+    @helper.form(action = routes.UserController.logout(), Symbol("id") -> "logout-form") {
+        @CSRF.formField
+    }
 </div>
 

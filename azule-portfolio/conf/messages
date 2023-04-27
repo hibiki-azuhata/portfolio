@@ -16,3 +16,6 @@ window.menu.help=ヘルプ(<u>H</u>)
 
 startMenu.login=ログイン
 startMenu.logout=ログアウト
+
+
+manage.production.create=新規作成

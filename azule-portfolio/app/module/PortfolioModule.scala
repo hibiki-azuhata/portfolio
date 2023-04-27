@@ -25,6 +25,7 @@ class PortfolioModule extends Module {
 
     Seq(
       bind[ProductionService].to[ProductionServiceImpl],
+      bind[ImageService].to[ImageServiceImpl],
       bind[UserService].to[UserServiceImpl]
     )
   }

@@ -1,0 +1,56 @@
+@import window._
+@import service.ProductionService.ProductionInfoData
+@(form: Form[ProductionInfoData], uploadImageCall: Call)(implicit request: RequestHeader, messages: Messages)
+
+@windowBase(Messages("window.name.newProduction"), "main-window", "window-new-production"){
+<ul>
+    <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.search"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.help"))</li>
+</ul>
+} {
+    @helper.form(action = helper.CSRF(routes.Productions.create())) {
+        @helper.inputText(form("title"))
+        <input type="file" name="thumbnail_image">
+        <textarea class="new-production-content"></textarea>
+        <input type="submit">
+    }
+<p>@helper.CSRF(routes.Images.upload()).url</p>
+    <script>
+        $(document).ready(function() {
+            $('.new-production-content').trumbowyg({
+                btnsDef: {
+                    image: {
+                        dropdown: ['insertImage', 'upload'],
+                        ico: 'insertImage'
+                    }
+                },
+                btns: [
+                    ['viewHTML'],
+                    ['formatting'],
+                    ['strong', 'em', 'del'],
+                    ['superscript', 'subscript'],
+                    ['link'],
+                    ['image'], // Our fresh created dropdown
+                    ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                    ['unorderedList', 'orderedList'],
+                    ['horizontalRule'],
+                    ['removeformat'],
+                    ['fullscreen']
+                ],
+                imageWidthModalEdit: true,
+                plugins: {
+                    upload: {
+                        serverPath: "@helper.CSRF(routes.Images.upload()).url",
+                        fileFieldName: 'image',
+                        success: function (data, trumbowyg, $modal, values) {
+                            data.append('<img src="' + data.file + '" alt="' + data.alt + '>');
+                            console.log($modal);
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}
