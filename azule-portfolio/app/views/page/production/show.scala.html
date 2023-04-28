@@ -1,0 +1,16 @@
+@import models.Production
+@import window._
+
+@(production: Production)(implicit req: RequestHeader, messages: Messages)
+
+@windowBase(production.title, "main-window", "window-show-production-" + production.id){
+    <ul>
+        <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
+        <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
+        <li class="window-menu-content">@Html(Messages("window.menu.search"))</li>
+        <li class="window-menu-content">@Html(Messages("window.menu.help"))</li>
+    </ul>
+} {
+    <h1>@production.title</h1>
+    @Html(production.content)
+}

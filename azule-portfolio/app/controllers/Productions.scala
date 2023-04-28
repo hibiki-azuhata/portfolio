@@ -34,7 +34,7 @@ class Productions @Inject()(
   }
 
   def show(id: Long) = authAction { implicit request =>
-    Ok(views.html.production.show(productionService.load.find(_.id == id).get))
+    Ok(views.html.page.production.show(productionService.load.find(_.id == id).get))
   }
 
   def create() = authAction(parse.multipartFormData) { implicit request =>
@@ -44,18 +44,17 @@ class Productions @Inject()(
         BadRequest(views.html.production.form.productionForm(formWithErrors))
       },
       data => {
-        val thumbnailPath = request.body.file("thumbnail_image").map { pic =>
-          pic.ref.copyTo(Paths.get(s"$IMAGE_PATH/${data.title}_thumbnail"), replace = true).toString
-        }.get
-        val imagePaths = (0 until 4).flatMap { i =>
-          request.body.file(s"image_$i").map { image =>
-            image.ref.copyTo(Paths.get(s"$IMAGE_PATH/${data.title}_image$i"), replace = true).toString
-          }
+        println(request.body.file("thumbnail_image"))
+        println("=============")
+        request.body.file("thumbnail_image").map { pic =>
+          pic.ref.copyTo(Paths.get(s"$IMAGE_PATH/${data.title}_thumbnail.png"), replace = true).toString
+        }.fold {
+          BadRequest(views.html.production.form.productionForm(productionForm.fill(data))) // need thumbnail image
+        } { thumbnailPath =>
+          Ok(views.html.page.production.show(productionService.create(
+            data.toProductionData(thumbnailPath, Nil, Nil)
+          )))
         }
-        val id = productionService.create(
-          data.toProductionData(thumbnailPath, data.alt.zip(imagePaths).map(j => ImageData(j._2, j._1)), Nil)
-        ).id
-        Redirect(routes.Productions.show(id))
       }
     )
   }

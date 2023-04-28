@@ -137,27 +137,13 @@ function showWindow(data) {
     loadWindow(addWindow);
 }
 
-function registerManageProduction() {
-    $('#new-production').dblclick(function(){
-        jsRoutes.controllers.Productions.add().ajax({
-            method: 'GET',
-            success: function(data) {
-                showWindow(data);
-            },
-            error: function(data) {
-                showWindow(data);
-            }
-        });
-    });
-}
-
 function registerDblclick(id, url, registerAction) {
     $('#icon-' + id).dblclick(function(){
         if(!$('#window-' + id)[0]) {
             url.ajax({
                 success: function(data) {
                     showWindow(data);
-                    registerAction();
+                    if(registerAction != undefined) registerAction();
                 },
                 error: function(data) {
                     showWindow(data);
@@ -173,6 +159,38 @@ function registerDblclick(id, url, registerAction) {
             }
         }
         closeStartMenu();
+    });
+}
+
+function registerManageProductionForm() {
+    $('#manageProduction-form').submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData($(this).get()[0]);
+        jsRoutes.controllers.Productions.create().ajax({
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                showWindow(data);
+            },
+            error: function(data) {
+                showWindow(data);
+                console.log("TODO badrequestの処理"); // flashのような領域を作って表示するようにする もしくはformとか？
+            }
+        });
+    });
+}
+
+function registerManageProduction() {
+    $('#window-manage-production > .main-window-content > .manage-production-item').each(function(){
+        var id = $(this).attr('id');
+        var iconId = id.replace('icon-', '');
+        if(id == 'icon-new-production') {
+            registerDblclick(iconId, jsRoutes.controllers.Productions.add(), registerManageProductionForm);
+        } else {
+            registerDblclick(iconId, jsRoutes.controllers.Productions.show(id.replace('icon-production_', '')));
+        }
     });
 }
 

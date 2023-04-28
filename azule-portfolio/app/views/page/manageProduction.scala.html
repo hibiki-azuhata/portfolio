@@ -11,12 +11,12 @@
     <li class="window-menu-content">@Html(Messages("window.menu.help"))</li>
 </ul>
 } {
-    <div id="new-production" class="manage-production-item" >
+    <div id="icon-new-production" class="manage-production-item" >
         <div class="test-square"></div>
         <p>@Messages("manage.production.create")</p>
     </div>
     @for(p <- prods) {
-        <div id="production-@{p.id}" class="manage-production-item" >
+        <div id="icon-production_@{p.id}" class="manage-production-item" >
             <img src="@routes.Productions.sendFile(p.thumbnail)" alt="thumbnail_@{p.title}" width="100px" height="100px">
             <p>@{p.title}</p>
         </div>
