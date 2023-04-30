@@ -7,13 +7,14 @@ GET     /about                      controllers.IntroductionController.about()
 # Productions
 GET     /productions/manage         controllers.Productions.index()
 POST    /productions/create         controllers.Productions.create()
-GET     /image                      controllers.Productions.sendFile(filename: String)
+POST    /productions/update         controllers.Productions.update()
 GET     /productions/add            controllers.Productions.add()
+GET     /productions/edit/:id       controllers.Productions.edit(id: Long)
 GET     /productions/:id            controllers.Productions.show(id: Long)
 
 # Images
 POST    /image/upload               controllers.Images.upload()
-GET     /image/get                  controllers.Images.get(filename: String)
+GET     /image/get/:filename        controllers.Images.get(filename: String)
 
 # UserController
 GET     /login                      controllers.UserController.control()

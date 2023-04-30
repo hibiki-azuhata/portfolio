@@ -12,7 +12,7 @@ window.name.manageBlog=ブログ管理
 window.menu.file=ファイル(<u>F</u>)
 window.menu.edit=編集(<u>E</u>)
 window.menu.search=検索(<u>V</u>)
-window.menu.help=ヘルプ(<u>H</u>)
+window.menu.reload=更新(<u>R</u>)
 
 startMenu.login=ログイン
 startMenu.logout=ログアウト

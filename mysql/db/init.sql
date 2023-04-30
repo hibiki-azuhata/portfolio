@@ -32,3 +32,10 @@ CREATE TABLE users (
   password nvarchar(30) not null,
   primary key (id)
 );
+CREATE TABLE pages (
+  id int(5) unsigned not null auto_increment,
+  content_type nvarchar(10) not null,
+  content text not null,
+  primary key (id),
+  unique(content_type)
+);

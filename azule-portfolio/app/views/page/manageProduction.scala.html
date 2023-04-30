@@ -8,7 +8,7 @@
     <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
     <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
     <li class="window-menu-content">@Html(Messages("window.menu.search"))</li>
-    <li class="window-menu-content">@Html(Messages("window.menu.help"))</li>
+    <li class="window-menu-content menu-reload">@Html(Messages("window.menu.reload"))</li>
 </ul>
 } {
     <div id="icon-new-production" class="manage-production-item" >
@@ -16,8 +16,8 @@
         <p>@Messages("manage.production.create")</p>
     </div>
     @for(p <- prods) {
-        <div id="icon-production_@{p.id}" class="manage-production-item" >
-            <img src="@routes.Productions.sendFile(p.thumbnail)" alt="thumbnail_@{p.title}" width="100px" height="100px">
+        <div id="icon-edit-production-@{p.id}" class="manage-production-item" >
+            <img src="@routes.Images.get(p.thumbnail)" alt="thumbnail_@{p.title}" width="100px" height="100px">
             <p>@{p.title}</p>
         </div>
     }

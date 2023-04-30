@@ -69,8 +69,17 @@ function setZIndex(thisWindow) {
     }
 }
 
+function getTaskId(w) {
+    return '#task-bar-' + w.attr('id');
+}
+
+function closeWindow(w) {
+    w.remove();
+    $(getTaskId(w)).remove();
+}
+
 function loadWindow(w) {
-    var taskId = '#task-bar-' + w.attr('id');
+    var taskId = getTaskId(w);
 
     w.resizable({
         handles: "all",
@@ -91,8 +100,7 @@ function loadWindow(w) {
         }
     });
     w.find('.window-button-close').click(function(){
-        w.remove();
-        $(taskId).remove();
+        closeWindow(w);
     });
     w.find('.window-button-full-window').click(function(){
         if(w.hasClass('window-fullscreen')) {
@@ -115,6 +123,7 @@ function loadWindow(w) {
             task.addClass('task-bar-hidden-window');
         }
     });
+    return w;
 }
 
 function taskElement(windowId, icon, windowName) {
@@ -134,7 +143,7 @@ function showWindow(data) {
         addWindow.css('left', lastAddedWindow.offset().left + 40);
     }
     $('.task-bar-content').append(taskElement(addWindow.attr('id'), 'bi-folder-fill', addWindow.find('.window-title-text').text()));
-    loadWindow(addWindow);
+    return loadWindow(addWindow);
 }
 
 function registerDblclick(id, url, registerAction) {
@@ -162,17 +171,19 @@ function registerDblclick(id, url, registerAction) {
     });
 }
 
-function registerManageProductionForm() {
-    $('#manageProduction-form').submit(function(e) {
+function registerManageProductionForm(objId, productionMethod) {
+    $('#manage-production-form-' + objId).submit(function(e) {
         e.preventDefault();
         var formData = new FormData($(this).get()[0]);
-        jsRoutes.controllers.Productions.create().ajax({
+        var windowId = $(this).data('window-id');
+        productionMethod.ajax({
             method: 'POST',
             data: formData,
             processData: false,
             contentType: false,
             success: function(data) {
                 showWindow(data);
+                closeWindow($('#' + windowId));
             },
             error: function(data) {
                 showWindow(data);
@@ -187,10 +198,23 @@ function registerManageProduction() {
         var id = $(this).attr('id');
         var iconId = id.replace('icon-', '');
         if(id == 'icon-new-production') {
-            registerDblclick(iconId, jsRoutes.controllers.Productions.add(), registerManageProductionForm);
+            registerDblclick(iconId, jsRoutes.controllers.Productions.add(), function() {
+                registerManageProductionForm('new', jsRoutes.controllers.Productions.create());
+            });
         } else {
-            registerDblclick(iconId, jsRoutes.controllers.Productions.show(id.replace('icon-production_', '')));
+            var objId = id.replace('icon-edit-production-', '');
+            registerDblclick(iconId, jsRoutes.controllers.Productions.edit(objId), function() {
+                registerManageProductionForm(objId, jsRoutes.controllers.Productions.update());
+            });
         }
+    });
+}
+
+function registerWork() {
+    $('#window-work > .main-window-content > .production-item').each(function(){
+        var id = $(this).attr('id');
+        var iconId = id.replace('icon-', '');
+        registerDblclick(iconId, jsRoutes.controllers.Productions.show(id.replace('icon-production-', '')));
     });
 }
 
@@ -202,7 +226,7 @@ $(function(){
                 method: 'GET',
                 success: function(data) {
                     insertStartMenu(data);
-                    registerDblclick('manageProduction', jsRoutes.controllers.Productions.index(), registerManageProduction);
+                    registerDblclick('manage-production', jsRoutes.controllers.Productions.index(), registerManageProduction);
                     registerLogoutForm()
                 },
                 error: function(data) {
@@ -226,7 +250,7 @@ $(function(){
     });
 
     registerDblclick('manual', jsRoutes.controllers.IntroductionController.manual());
-    registerDblclick('work', jsRoutes.controllers.IntroductionController.work());
+    registerDblclick('work', jsRoutes.controllers.IntroductionController.work(), registerWork);
     registerDblclick('about', jsRoutes.controllers.IntroductionController.about());
 
     $('.display-icon').on('selectstart', function(){

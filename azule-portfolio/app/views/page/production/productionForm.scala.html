@@ -1,9 +1,9 @@
 @import helper._
 @import window._
 @import service.ProductionService.ProductionInfoData
-@(form: Form[ProductionInfoData], uploadImageCall: Call)(implicit request: RequestHeader, messages: Messages)
+@(title: String, clazz: String, form: Form[ProductionInfoData], formCall: Call, uploadImageCall: Call)(implicit request: RequestHeader, messages: Messages)
 
-@windowBase(Messages("manage.production.create"), "main-window", "window-new-production"){
+@windowBase(title, "main-window", clazz){
 <ul>
     <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
     <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
@@ -11,16 +11,24 @@
     <li class="window-menu-content">@Html(Messages("window.menu.help"))</li>
 </ul>
 } {
-    @helper.form(action = routes.Productions.create(), Symbol("enctype") -> "multipart/form-data", Symbol("id") -> "manageProduction-form") {
+    @helper.form(
+        action = formCall,
+        Symbol("enctype") -> "multipart/form-data",
+        Symbol("id") -> s"manage-production-form-${form("id").value.fold("new")(id => id)}",
+        Symbol("data-window-id") -> clazz
+    ) {
         @CSRF.formField
+        <input type="hidden" name="id" value="@form("id").value">
         @helper.inputText(form("title"))
         <input type="file" name="thumbnail_image">
-        <textarea class="new-production-content" name="content"></textarea>
+        <input type="hidden" name="thumbnail" value="@form("thumbnail").value">
+        <textarea class="production-content" name="content" value="@form("content").value"></textarea>
         <input type="submit">
     }
     <script>
         $(document).ready(function() {
-            $('.new-production-content').trumbowyg({
+            var thisContent = $('#@clazz .production-content');
+            thisContent.trumbowyg({
                 btnsDef: {
                     image: {
                         dropdown: ['insertImage', 'upload'],
@@ -30,33 +38,43 @@
                 btns: [
                     ['viewHTML'],
                     ['formatting'],
+                    ['fontfamily', 'fontsize'],
                     ['strong', 'em', 'del'],
                     ['superscript', 'subscript'],
                     ['link'],
                     ['image'],
                     ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
                     ['unorderedList', 'orderedList'],
+                    ['table'], ['tableCellBackgroundColor', 'tableBorderColor'],
                     ['horizontalRule'],
                     ['removeformat'],
                     ['fullscreen']
                 ],
                 imageWidthModalEdit: true,
+                tagClasses: {
+                    table: 'table table-bordered'
+                },
                 plugins: {
                     upload: {
                         serverPath: "@helper.CSRF(routes.Images.upload()).url",
                         fileFieldName: 'image',
                         success: function (data, trumbowyg, $modal, values) {
-                            var editor = $('.new-production-content');
-                            editor.trumbowyg('html', '<img src="' + data.file + '" alt="' + values.alt + '" width="' + values.width + '">');
+                            var editor = $('#@clazz .production-content');
+                            editor.trumbowyg('html', editor.trumbowyg('html') + '<img src="' + data.file + '" alt="' + values.alt + '" width="' + values.width + '">');
                             editor.trumbowyg('closeModal');
                         },
                         error: function() {
                             console.log("test");
                         },
                         imageWidthModalEdit: true
+                    },
+                    resizimg: {
+                        minSize: 64,
+                        step: 16,
                     }
                 }
             });
+            thisContent.trumbowyg('html', thisContent.attr('value'));
         });
     </script>
 }

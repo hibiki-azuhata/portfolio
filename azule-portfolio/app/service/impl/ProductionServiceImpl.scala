@@ -14,9 +14,9 @@ class ProductionServiceImpl extends ProductionService {
     Production.create(data.title, data.content, data.thumbnail, imageIds, data.tagIds)
   }
 
-  override def update(data: ProductionData): Unit = {
+  override def update(data: ProductionData): Option[Production] = {
     val column = Production.column
-    data.id.foreach { id =>
+    data.id.flatMap { id =>
       Production.updateById(id).withNamedValues(
         column.title -> data.title,
         column.content -> data.content,
@@ -31,8 +31,13 @@ class ProductionServiceImpl extends ProductionService {
       }
       ProductionTag.create(id, data.tagIds)
       //ProductionImage.create(id, data.imageIds)
+
+      Production.findById(id)
     }
   }
+
+  def find(id: Long): Option[Production] =
+    Production.findById(id)
 
   override def load: Seq[Production] =
     Production.findAll()

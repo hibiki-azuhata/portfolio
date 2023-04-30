@@ -5,9 +5,9 @@
 @base(production.title) {
     <h3>@production.title</h3>
     <p>@production.content</p>
-    <img src="@routes.Productions.sendFile(production.thumbnail)" alt="thumbnail">
+    <img src="@routes.Images.get(production.thumbnail)" alt="thumbnail">
     @for(image <- production.images) {
-        <img src="@routes.Productions.sendFile(image.url)" alt="image.alt">
+        <img src="@routes.Images.get(image.url)" alt="image.alt">
     }
 }
 

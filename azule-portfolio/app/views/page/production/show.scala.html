@@ -3,7 +3,7 @@
 
 @(production: Production)(implicit req: RequestHeader, messages: Messages)
 
-@windowBase(production.title, "main-window", "window-show-production-" + production.id){
+@windowBase(production.title, "main-window", "window-production-" + production.id){
     <ul>
         <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
         <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>

@@ -1,15 +1,13 @@
 package controllers
 
-import module.PortfolioModule.IMAGE_PATH
 import play.api.data.Form
 import play.api.data.Forms._
+import play.api.i18n.Messages
 import play.api.mvc.ControllerComponents
 import service.ProductionService
 import service.ProductionService._
 
-import java.nio.file.Paths
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
 
 class Productions @Inject()(
   authAction: AuthAction,
@@ -21,7 +19,7 @@ class Productions @Inject()(
       "id" -> optional(longNumber),
       "title" -> nonEmptyText,
       "content" -> nonEmptyText,
-      "alt" -> seq(text)
+      "thumbnail" -> default(text, "")
     )(ProductionInfoData.apply)(ProductionInfoData.unapply)
   )
 
@@ -30,7 +28,20 @@ class Productions @Inject()(
   }
 
   def add() = authAction { implicit request =>
-    Ok(views.html.page.production.productionForm(productionForm, routes.Images.upload()))
+    Ok(views.html.page.production.productionForm(Messages("manage.production.create"), "window-new-production", productionForm, routes.Productions.create(), routes.Images.upload()))
+  }
+
+  def edit(id: Long) = authAction { implicit request =>
+    productionService.find(id).fold(
+      BadRequest(views.html.page.production.productionForm(Messages("manage.production.create"), "window-new-production", productionForm, routes.Productions.create(), routes.Images.upload()))
+    )( production =>
+      Ok(views.html.page.production.productionForm(
+        Messages("manage.production.create"), s"window-edit-production-$id",
+        productionForm.fill(ProductionInfoData.toProductionData(production)),
+        routes.Productions.update(),
+        routes.Images.upload()
+      ))
+    )
   }
 
   def show(id: Long) = authAction { implicit request =>
@@ -44,27 +55,30 @@ class Productions @Inject()(
         BadRequest(views.html.production.form.productionForm(formWithErrors))
       },
       data => {
-        println(request.body.file("thumbnail_image"))
-        println("=============")
-        request.body.file("thumbnail_image").map { pic =>
-          pic.ref.copyTo(Paths.get(s"$IMAGE_PATH/${data.title}_thumbnail.png"), replace = true).toString
-        }.fold {
+        Images.upload("thumbnail_image", s"${data.title}_").fold {
           BadRequest(views.html.production.form.productionForm(productionForm.fill(data))) // need thumbnail image
         } { thumbnailPath =>
           Ok(views.html.page.production.show(productionService.create(
-            data.toProductionData(thumbnailPath, Nil, Nil)
+            data.toProductionData(Images.getName(thumbnailPath), Nil, Nil)
           )))
         }
       }
     )
   }
 
-  def sendFile(filename: String) = authAction { implicit request =>
-    implicit val ec: ExecutionContext = cc.executionContext
-    Ok.sendFile(
-      content = new java.io.File(filename),
-      inline = true
+  def update() = authAction(parse.multipartFormData) { implicit request =>
+    productionForm.bindFromRequest().fold(
+      formWithErrors => {
+        BadRequest(views.html.production.form.productionForm(formWithErrors))
+      },
+      data => {
+        val newThumbnail = Images.upload("thumbnail_image", s"${data.title}_")
+        productionService.update(data.toProductionData(newThumbnail.getOrElse(data.thumbnail), Nil, Nil)).fold {
+          NotFound(Messages("production.update.notFound"))
+        } { production =>
+          Ok(views.html.page.production.show(production))
+        }
+      }
     )
   }
-
 }

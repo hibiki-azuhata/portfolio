@@ -18,7 +18,7 @@ class IntroductionController @Inject()(
   }
 
   def work() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.page.work())
+    Ok(views.html.page.work(productionService.load))
   }
 
   def about() = Action { implicit request: Request[AnyContent] =>

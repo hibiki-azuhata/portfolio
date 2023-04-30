@@ -3,8 +3,8 @@ package controllers
 import module.PortfolioModule.IMAGE_PATH
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.i18n.Messages
-import play.api.mvc.ControllerComponents
+import play.api.libs.Files.TemporaryFile
+import play.api.mvc.{ControllerComponents, MultipartFormData, Request}
 import service.ImageService
 
 import java.nio.file.Paths
@@ -20,20 +20,16 @@ class Images @Inject()(
     "alt" -> nonEmptyText
   )
   def upload() = authAction(parse.multipartFormData) { implicit request =>
-    println(request)
     imageForm.bindFromRequest().fold(
       _ => {
         BadRequest(s"""{"success": false, "file":"", "message":"image.upload.noAlt"}""")
       },
       data => {
-        val filename = f"${data}_image.png"
-        request.body.file("image").map { image =>
-          image.ref.copyTo(Paths.get(s"$IMAGE_PATH/$filename"), replace = true).toString
-        }.fold {
+        Images.upload("image", s"${data}_").fold {
           BadRequest(s"""{"success": false, "file":"", "message":"image.upload.failed"}""")
         } { imagePath =>
           imageService.create(imagePath, data)
-          Ok(s"""{"success": true, "file":"${routes.Images.get(filename).url}", "message":"image.upload.success"}""")
+          Ok(s"""{"success": true, "file":"${routes.Images.get(Images.getName(imagePath)).url}", "message":"image.upload.success"}""")
         }
       }
     )
@@ -46,5 +42,16 @@ class Images @Inject()(
       content = new java.io.File(s"$IMAGE_PATH/$filename"),
       inline = true
     )
+  }
+}
+
+object Images {
+
+  def getName(filename: String): String =
+    filename.replaceFirst(s"$IMAGE_PATH/", "")
+  def upload(key: String, prefix: String = "", suffix: String = "")(implicit request: Request[MultipartFormData[TemporaryFile]]): Option[String] = {
+    request.body.file(key).map { pic =>
+      pic.ref.copyTo(Paths.get(s"$IMAGE_PATH/$prefix$key$suffix.png"), replace = true).toString
+    }
   }
 }

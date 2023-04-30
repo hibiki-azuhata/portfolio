@@ -162,6 +162,15 @@ html,body {
     position: relative;
     left: 14px;
     width: 180px;
+    @media (max-width: 991.98px) {
+        width: 139.35px;
+    }
+    @media (max-width: 767.98px) {
+        width: 104.51px;
+    }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding-left: 4px;
     text-align: left;
     margin-left: 14px;
@@ -205,12 +214,20 @@ html,body {
     @include button
 }
 
-.manage-production-item {
+@mixin production-item {
     float: left;
     width: 120px;
     text-align: center;
     margin: 10px;
     @include button
+}
+
+.manage-production-item {
+    @include production-item
+}
+
+.production-item {
+    @include production-item
 }
 
 .test-square {
