@@ -28,18 +28,17 @@ class Productions @Inject()(
   }
 
   def add() = authAction { implicit request =>
-    Ok(views.html.page.production.productionForm(Messages("manage.production.create"), "window-new-production", productionForm, routes.Productions.create(), routes.Images.upload()))
+    Ok(views.html.page.production.productionForm(Messages("manage.production.create"), "window-new-production", productionForm, routes.Productions.create()))
   }
 
   def edit(id: Long) = authAction { implicit request =>
     productionService.find(id).fold(
-      BadRequest(views.html.page.production.productionForm(Messages("manage.production.create"), "window-new-production", productionForm, routes.Productions.create(), routes.Images.upload()))
+      BadRequest(views.html.page.production.productionForm(Messages("manage.production.create"), "window-new-production", productionForm, routes.Productions.create()))
     )( production =>
       Ok(views.html.page.production.productionForm(
         Messages("manage.production.create"), s"window-edit-production-$id",
         productionForm.fill(ProductionInfoData.toProductionData(production)),
-        routes.Productions.update(),
-        routes.Images.upload()
+        routes.Productions.update()
       ))
     )
   }

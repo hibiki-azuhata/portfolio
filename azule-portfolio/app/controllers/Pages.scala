@@ -21,7 +21,7 @@ class Pages @Inject()(
   )
 
   def index() = authAction { implicit request =>
-    Ok()
+    Ok(views.html.page.managePage())
   }
 
   def edit(contentType: String) = authAction { implicit request =>
@@ -29,17 +29,24 @@ class Pages @Inject()(
       case page if page.contentType == ContentType.Dummy =>
         BadRequest
       case page =>
-        Ok()
+        Ok(views.html.page.page.pageForm(pageForm.fill((page.contentType.toString, page.content))))
     }
   }
 
   def update() = authAction { implicit request =>
-    pageService.load(ContentType.find(contentType)) match {
-      case page if page.contentType == ContentType.Dummy =>
-        BadRequest
-      case page =>
-        Ok()
-    }
+    pageForm.bindFromRequest().fold(
+      formWithError => {
+        BadRequest(views.html.page.page.pageForm(formWithError))
+      },
+      data => {
+        pageService.load(ContentType.find(data._1)) match {
+          case page if page.contentType == ContentType.Dummy =>
+            BadRequest(views.html.page.managePage())
+          case page =>
+            Ok(views.html.page.page.show(page))
+        }
+      }
+    )
   }
 
 }

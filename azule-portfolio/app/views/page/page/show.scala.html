@@ -1,0 +1,15 @@
+@import models.Page
+@import window._
+
+@(page: Page)(implicit req: RequestHeader, messages: Messages)
+
+@windowBase(Messages(s"window.name.${page.contentType.toString.toLowerCase}"), "main-window", s"window-${page.contentType.toString.toLowerCase}"){
+<ul>
+    <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.search"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.help"))</li>
+</ul>
+} {
+    @Html(page.content)
+}

@@ -12,6 +12,11 @@ GET     /productions/add            controllers.Productions.add()
 GET     /productions/edit/:id       controllers.Productions.edit(id: Long)
 GET     /productions/:id            controllers.Productions.show(id: Long)
 
+# Pages
+GET     /pages/manage               controllers.Pages.index()
+GET     /pages/edit/:contentType    controllers.Pages.edit(contentType: String)
+POST    /page/update                controllers.Pages.update()
+
 # Images
 POST    /image/upload               controllers.Images.upload()
 GET     /image/get/:filename        controllers.Images.get(filename: String)

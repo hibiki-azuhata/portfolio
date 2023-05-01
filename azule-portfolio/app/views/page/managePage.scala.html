@@ -1,0 +1,21 @@
+@import window._
+
+@()(implicit req: RequestHeader, messages: Messages)
+
+@windowBase(Messages("window.name.managePage"), "main-window", "window-manage-page"){
+<ul>
+    <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.search"))</li>
+    <li class="window-menu-content menu-reload">@Html(Messages("window.menu.reload"))</li>
+</ul>
+} {
+<div id="icon-page-manual" class="manage-page-item" >
+    <div class="test-square"></div>
+    <p>@Messages("manage.page.manual")</p>
+</div>
+<div id="icon-page-about" class="manage-page-item" >
+    <div class="test-square"></div>
+    <p>@Messages("manage.page.about")</p>
+</div>
+}

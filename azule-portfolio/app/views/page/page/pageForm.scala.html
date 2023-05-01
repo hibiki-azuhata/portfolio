@@ -1,9 +1,9 @@
 @import helper._
 @import window._
 @import service.ProductionService.ProductionInfoData
-@(title: String, clazz: String, form: Form[ProductionInfoData], formCall: Call, uploadImageCall: Call)(implicit request: RequestHeader, messages: Messages)
+@(contentType: String, form: Form[(String, String)])(implicit request: RequestHeader, messages: Messages)
 
-@windowBase(title, "main-window", clazz){
+@windowBase(Messages(""), "main-window", "window-edit-page"){
 <ul>
     <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
     <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
@@ -12,22 +12,17 @@
 </ul>
 } {
     @helper.form(
-        action = formCall,
-        Symbol("enctype") -> "multipart/form-data",
-        Symbol("id") -> s"manage-production-form-${form("id").value.fold("new")(id => id)}",
-        Symbol("data-window-id") -> clazz
+        action = routes.Pages.update(),
+        Symbol("id") -> s"edit-page-form"
     ) {
         @CSRF.formField
-        <input type="hidden" name="id" value="@form("id").value">
-        @helper.inputText(form("title"))
-        <input type="file" name="thumbnail_image">
-        <input type="hidden" name="thumbnail" value="@form("thumbnail").value">
-        <textarea class="production-content" name="content" value="@form("content").value"></textarea>
+        <input type="hidden" name="contentType" value="@form("contentType").value">
+        <textarea class="page-content" name="content" value="@form("content").value"></textarea>
         <input type="submit">
     }
     <script>
         $(document).ready(function() {
-            var thisContent = $('#@clazz .production-content');
+            var thisContent = $('#manage-page-form > .page-content');
             thisContent.trumbowyg({
                 btnsDef: {
                     image: {
@@ -59,7 +54,7 @@
                         serverPath: "@helper.CSRF(routes.Images.upload()).url",
                         fileFieldName: 'image',
                         success: function (data, trumbowyg, $modal, values) {
-                            var editor = $('#@clazz .production-content');
+                            var editor = $('#manage-page-form > .page-content');
                             editor.trumbowyg('html', editor.trumbowyg('html') + '<img src="' + data.file + '" alt="' + values.alt + '" width="' + values.width + '">');
                             editor.trumbowyg('closeModal');
                         },

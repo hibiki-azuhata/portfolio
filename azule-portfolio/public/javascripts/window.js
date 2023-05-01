@@ -193,8 +193,47 @@ function registerManageProductionForm(objId, productionMethod) {
     });
 }
 
+function registerManagePageForm(objId, productionMethod) {
+    $('#manage-production-form-' + objId).submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData($(this).get()[0]);
+        var windowId = $(this).data('window-id');
+        productionMethod.ajax({
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                showWindow(data);
+                closeWindow($('#' + windowId));
+            },
+            error: function(data) {
+                showWindow(data);
+                console.log("TODO badrequestの処理"); // flashのような領域を作って表示するようにする もしくはformとか？
+            }
+        });
+    });
+}
+
 function registerManageProduction() {
     $('#window-manage-production > .main-window-content > .manage-production-item').each(function(){
+        var id = $(this).attr('id');
+        var iconId = id.replace('icon-', '');
+        if(id == 'icon-new-production') {
+            registerDblclick(iconId, jsRoutes.controllers.Productions.add(), function() {
+                registerManageProductionForm('new', jsRoutes.controllers.Productions.create());
+            });
+        } else {
+            var objId = id.replace('icon-edit-production-', '');
+            registerDblclick(iconId, jsRoutes.controllers.Productions.edit(objId), function() {
+                registerManageProductionForm(objId, jsRoutes.controllers.Productions.update());
+            });
+        }
+    });
+}
+
+function registerManagePage() {
+    $('#window-manage-page > .main-window-content > .manage-page-item').each(function(){
         var id = $(this).attr('id');
         var iconId = id.replace('icon-', '');
         if(id == 'icon-new-production') {
@@ -227,6 +266,7 @@ $(function(){
                 success: function(data) {
                     insertStartMenu(data);
                     registerDblclick('manage-production', jsRoutes.controllers.Productions.index(), registerManageProduction);
+                    registerDblclick('manage-page', jsRoutes.controllers.Pages.index(), registerManagePage);
                     registerLogoutForm()
                 },
                 error: function(data) {
