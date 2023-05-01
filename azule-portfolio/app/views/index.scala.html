@@ -1,7 +1,7 @@
 @import window._
 
-@()(implicit req: RequestHeader, messages: Messages)
+@(initPage: Html)(implicit req: RequestHeader, messages: Messages)
 
 @base(Messages("portfolio.name"), true) {
-  @{page.manual()}
+  @initPage
 }

@@ -12,8 +12,6 @@
     border-top: 2px solid #e7e7e7;
 }
 
-
-
 .start-menu-icon {
     position: relative;
     top: 10%;
@@ -41,8 +39,9 @@
     white-space: nowrap;
     position: relative;
     display: inline-block;
-    right: 100px;
-    right: 0;
+    right: 50%;
+    top: 50%;
+    scale: 2.8;
 }
 
 .test-square-menu {

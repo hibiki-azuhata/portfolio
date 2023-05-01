@@ -1,9 +1,9 @@
 @import helper._
 @import window._
 @import service.ProductionService.ProductionInfoData
-@(contentType: String, form: Form[(String, String)])(implicit request: RequestHeader, messages: Messages)
+@(contentType: String, clazz: String, form: Form[(String, String)])(implicit request: RequestHeader, messages: Messages)
 
-@windowBase(Messages(""), "main-window", "window-edit-page"){
+@windowBase(Messages("manage.page", Messages(s"window.name.${contentType.toLowerCase}")), "main-window", clazz){
 <ul>
     <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
     <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
@@ -13,7 +13,8 @@
 } {
     @helper.form(
         action = routes.Pages.update(),
-        Symbol("id") -> s"edit-page-form"
+        Symbol("id") -> s"manage-page-form-$contentType",
+        Symbol("data-window-id") -> clazz
     ) {
         @CSRF.formField
         <input type="hidden" name="contentType" value="@form("contentType").value">
@@ -22,7 +23,7 @@
     }
     <script>
         $(document).ready(function() {
-            var thisContent = $('#manage-page-form > .page-content');
+            var thisContent = $('#manage-page-form-@contentType > .page-content');
             thisContent.trumbowyg({
                 btnsDef: {
                     image: {
@@ -54,7 +55,7 @@
                         serverPath: "@helper.CSRF(routes.Images.upload()).url",
                         fileFieldName: 'image',
                         success: function (data, trumbowyg, $modal, values) {
-                            var editor = $('#manage-page-form > .page-content');
+                            var editor = $('#manage-page-form-@contentType > .page-content');
                             editor.trumbowyg('html', editor.trumbowyg('html') + '<img src="' + data.file + '" alt="' + values.alt + '" width="' + values.width + '">');
                             editor.trumbowyg('closeModal');
                         },

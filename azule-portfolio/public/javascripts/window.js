@@ -146,9 +146,24 @@ function showWindow(data) {
     return loadWindow(addWindow);
 }
 
+function checkWindowExists(id, action) {
+    if(!$(id)[0]) {
+        action();
+    } else {
+        var thisWindow = $(id);
+        var task = $('#task-bar-' + thisWindow.attr('id'));
+        setZIndex(thisWindow);
+        if(task.hasClass('task-bar-hidden-window')) {
+            thisWindow.removeClass('window-hidden');
+            task.removeClass('task-bar-hidden-window');
+        }
+    }
+    closeStartMenu();
+}
+
 function registerDblclick(id, url, registerAction) {
     $('#icon-' + id).dblclick(function(){
-        if(!$('#window-' + id)[0]) {
+        checkWindowExists('#window-' + id, function(){
             url.ajax({
                 success: function(data) {
                     showWindow(data);
@@ -158,16 +173,7 @@ function registerDblclick(id, url, registerAction) {
                     showWindow(data);
                 }
             });
-        } else {
-            var thisWindow = $('#window-' + id);
-            var task = $('#task-bar-' + thisWindow.attr('id'));
-            setZIndex(thisWindow);
-            if(task.hasClass('task-bar-hidden-window')) {
-                thisWindow.removeClass('window-hidden');
-                task.removeClass('task-bar-hidden-window');
-            }
-        }
-        closeStartMenu();
+        });
     });
 }
 
@@ -193,12 +199,12 @@ function registerManageProductionForm(objId, productionMethod) {
     });
 }
 
-function registerManagePageForm(objId, productionMethod) {
-    $('#manage-production-form-' + objId).submit(function(e) {
+function registerManagePageForm(objId) {
+    $('#manage-page-form-' + objId).submit(function(e) {
         e.preventDefault();
         var formData = new FormData($(this).get()[0]);
         var windowId = $(this).data('window-id');
-        productionMethod.ajax({
+        jsRoutes.controllers.Pages.update().ajax({
             method: 'POST',
             data: formData,
             processData: false,
@@ -236,16 +242,10 @@ function registerManagePage() {
     $('#window-manage-page > .main-window-content > .manage-page-item').each(function(){
         var id = $(this).attr('id');
         var iconId = id.replace('icon-', '');
-        if(id == 'icon-new-production') {
-            registerDblclick(iconId, jsRoutes.controllers.Productions.add(), function() {
-                registerManageProductionForm('new', jsRoutes.controllers.Productions.create());
-            });
-        } else {
-            var objId = id.replace('icon-edit-production-', '');
-            registerDblclick(iconId, jsRoutes.controllers.Productions.edit(objId), function() {
-                registerManageProductionForm(objId, jsRoutes.controllers.Productions.update());
-            });
-        }
+        var objId = id.replace('icon-edit-page-', '');
+        registerDblclick(iconId, jsRoutes.controllers.Pages.edit($(this).data('content-type')), function() {
+            registerManagePageForm(objId);
+        });
     });
 }
 

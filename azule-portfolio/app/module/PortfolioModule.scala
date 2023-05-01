@@ -1,6 +1,6 @@
 package module
 
-import models.User
+import models.{Page, User}
 import module.PortfolioModule._
 import play.api.inject.Module
 import play.api.{Configuration, Environment}
@@ -18,10 +18,10 @@ class PortfolioModule extends Module {
     if(Files.notExists(dirImages)) Files.createDirectory(dirImages)
 
     DBs.setupAll()
+    Page.setUp
     if(User.findAll().isEmpty) {
       User.create("root", "root")
     }
-
 
     Seq(
       bind[ProductionService].to[ProductionServiceImpl],

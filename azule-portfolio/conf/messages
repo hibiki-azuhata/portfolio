@@ -19,3 +19,5 @@ startMenu.logout=ログアウト
 
 
 manage.production.create=新規作成
+
+manage.page={0} (編集)

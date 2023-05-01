@@ -230,6 +230,10 @@ html,body {
     @include production-item
 }
 
+.manage-page-item {
+    @include production-item
+}
+
 .test-square {
     display: inline-block;
     background-color: red;

@@ -20,6 +20,8 @@ class Pages @Inject()(
     )
   )
 
+  private def windowId(ct: String): String = s"window-edit-page-$ct"
+
   def index() = authAction { implicit request =>
     Ok(views.html.page.managePage())
   }
@@ -29,21 +31,22 @@ class Pages @Inject()(
       case page if page.contentType == ContentType.Dummy =>
         BadRequest
       case page =>
-        Ok(views.html.page.page.pageForm(pageForm.fill((page.contentType.toString, page.content))))
+        Ok(views.html.page.page.pageForm(contentType, windowId(contentType), pageForm.fill((page.contentType.toString, page.content))))
     }
   }
 
   def update() = authAction { implicit request =>
     pageForm.bindFromRequest().fold(
       formWithError => {
-        BadRequest(views.html.page.page.pageForm(formWithError))
+        val contentType = formWithError("contentType").value.getOrElse(ContentType.Dummy).toString
+        BadRequest(views.html.page.page.pageForm(contentType, windowId(contentType), formWithError))
       },
       data => {
         pageService.load(ContentType.find(data._1)) match {
           case page if page.contentType == ContentType.Dummy =>
             BadRequest(views.html.page.managePage())
           case page =>
-            Ok(views.html.page.page.show(page))
+            Ok(views.html.page.page.show(pageService.update(page.contentType, data._2)))
         }
       }
     )
