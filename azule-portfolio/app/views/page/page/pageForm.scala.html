@@ -1,6 +1,6 @@
+@import service.ProductionService.ProductionInfoData
 @import helper._
 @import window._
-@import service.ProductionService.ProductionInfoData
 @(contentType: String, clazz: String, form: Form[(String, String)])(implicit request: RequestHeader, messages: Messages)
 
 @windowBase(Messages("manage.page", Messages(s"window.name.${contentType.toLowerCase}")), "main-window", clazz){

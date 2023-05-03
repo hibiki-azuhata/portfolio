@@ -13,6 +13,7 @@ window.menu.file=ファイル(<u>F</u>)
 window.menu.edit=編集(<u>E</u>)
 window.menu.search=検索(<u>V</u>)
 window.menu.reload=更新(<u>R</u>)
+window.menu.help=ヘルプ(<u>H</u>)
 
 startMenu.login=ログイン
 startMenu.logout=ログアウト
@@ -20,4 +21,7 @@ startMenu.logout=ログアウト
 
 manage.production.create=新規作成
 
+manage.user.table.id=#
+manage.user.table.username=ユーザー名
+manage.user.create=新規作成
 manage.page={0} (編集)

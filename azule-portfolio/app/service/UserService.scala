@@ -13,12 +13,14 @@ trait UserService {
 
   def load(id: Long): Option[User]
 
-  def authenticate(data: LoginData): Option[String]
+  def list: Seq[User]
+
+  def createUUID(data: LoginData): Option[String]
 
 }
 
 object UserService {
-  case class UserData(id: Option[Long], name: String, password: String)
+  case class UserData(id: Option[Long], username: String, password: String)
 
   case class LoginData(name: String, password: String)
 }

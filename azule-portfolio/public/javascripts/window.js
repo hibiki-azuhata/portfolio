@@ -146,6 +146,14 @@ function showWindow(data) {
     return loadWindow(addWindow);
 }
 
+function reloadWindow(_data) {
+    var data = $(_data);
+    var id = data.attr('id');
+    var targetWindow = $('#' + id);
+    targetWindow.find('.main-window-content').remove();
+    targetWindow.find('.window-menu').after(data);
+}
+
 function checkWindowExists(id, action) {
     if(!$(id)[0]) {
         action();
@@ -221,6 +229,26 @@ function registerManagePageForm(objId) {
     });
 }
 
+function registerManageUserForm(objId, userMethod) {
+    $('#manage-user-form-' + objId).submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData($(this).get()[0]);
+        var windowId = $(this).data('window-id');
+        userMethod.ajax({
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                reloadWindow(data);
+            },
+            error: function(data) {
+                reloadWindow(data);
+            }
+        });
+    });
+}
+
 function registerManageProduction() {
     $('#window-manage-production > .main-window-content > .manage-production-item').each(function(){
         var id = $(this).attr('id');
@@ -249,6 +277,22 @@ function registerManagePage() {
     });
 }
 
+function registerManageUser() {
+    $('#window-manage-user > .main-window-content > .manage-user-item').each(function(){
+        var id = $(this).data('id');
+        if(!id){
+            registerDblclick('edit-user-new', jsRoutes.controllers.UserController.createPage(), function() {
+                registerManageUserForm('new', jsRoutes.controllers.UserController.create());
+            });
+        } else {
+            registerDblclick('edit-user' + id, jsRoutes.controllers.UserController.updatePage(), function() {
+                registerManageUserForm(id, jsRoutes.controllers.UserController.update(id));
+            });
+        }
+    });
+}
+
+
 function registerWork() {
     $('#window-work > .main-window-content > .production-item').each(function(){
         var id = $(this).attr('id');
@@ -267,6 +311,7 @@ $(function(){
                     insertStartMenu(data);
                     registerDblclick('manage-production', jsRoutes.controllers.Productions.index(), registerManageProduction);
                     registerDblclick('manage-page', jsRoutes.controllers.Pages.index(), registerManagePage);
+                    registerDblclick('manage-user', jsRoutes.controllers.UserController.index(), registerManageUser);
                     registerLogoutForm()
                 },
                 error: function(data) {

@@ -1,0 +1,34 @@
+@import window._
+@import models.User
+
+@(users: Seq[User])(implicit req: RequestHeader, messages: Messages)
+
+@windowBase(Messages("window.name.manageUser"), "main-window", "window-manage-user"){
+    <ul>
+        <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
+        <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
+        <li class="window-menu-content">@Html(Messages("window.menu.search"))</li>
+        <li class="window-menu-content menu-reload">@Html(Messages("window.menu.reload"))</li>
+    </ul>
+} {
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th style="width: 30%;">@Messages("manage.user.table.id")</th>
+                <th style="width: 70%;">@Messages("manage.user.table.username")</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="icon-edit-user-new" class="manage-user-item">
+                <td></td>
+                <td>@Messages("manage.user.create")</td>
+            </tr>
+            @for(u <- users) {
+                <tr id="icon-edit-user-@{u.id}" class="manage-user-item" data-id="@{u.id}">
+                    <td>@{u.id}</td>
+                    <td>@{u.name}</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

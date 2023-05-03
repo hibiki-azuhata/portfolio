@@ -1,6 +1,7 @@
 package controllers
 
 import controllers.AuthAction._
+import play.api.cache.SyncCacheApi
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Results.Unauthorized
 import play.api.mvc.{ActionBuilder, AnyContent, BodyParser, ControllerComponents, PlayBodyParsers, Request, Result}
@@ -8,14 +9,19 @@ import play.api.mvc.{ActionBuilder, AnyContent, BodyParser, ControllerComponents
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AuthAction @Inject()(val cc: ControllerComponents, parsers: PlayBodyParsers)(implicit val executionContext: ExecutionContext)
+class AuthAction @Inject()(
+  cache: SyncCacheApi,
+  val cc: ControllerComponents,
+  parsers: PlayBodyParsers
+)(implicit val executionContext: ExecutionContext)
   extends ActionBuilder[Request, AnyContent] with LoginSupport with I18nSupport {
   override def parser: BodyParser[AnyContent] = parsers.anyContent
   override def invokeBlock[T](request: Request[T], block: Request[T] => Future[Result]): Future[Result] = {
     implicit val req: Request[T] = request
-    req.session.get(USER_NAME) match {
-      case Some(_) => block(request)
-      case None => Future(Unauthorized(views.html.start.login(loginForm)))
+    req.session.get(LOGIN_SESSION) match {
+      case Some(uuid) if cache.get[Long](uuid).nonEmpty =>
+        block(request)
+      case _ => Future(Unauthorized(views.html.start.login(loginForm)))
     }
   }
 
@@ -23,5 +29,5 @@ class AuthAction @Inject()(val cc: ControllerComponents, parsers: PlayBodyParser
 }
 
 object AuthAction {
-  val USER_NAME = "name"
+  val LOGIN_SESSION = "login-uuid"
 }

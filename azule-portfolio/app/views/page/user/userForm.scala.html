@@ -1,0 +1,26 @@
+@import helper._
+@import service.UserService.UserData
+@import window._
+@(formCall: Call, clazz: String, form: Form[UserData])(implicit request: RequestHeader, messages: Messages)
+
+@windowBase(Messages("manage.user", form("name").value.fold(Messages("user.new"))(id => id)), "main-window", clazz){
+    <ul>
+        <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
+        <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
+        <li class="window-menu-content">@Html(Messages("window.menu.search"))</li>
+        <li class="window-menu-content">@Html(Messages("window.menu.help"))</li>
+    </ul>
+} {
+    @helper.form(
+        action = formCall,
+        Symbol("id") -> s"manage-user-form-${form("id").value.fold("new")(id => id)}",
+        Symbol("data-window-id") -> clazz
+    ) {
+        @CSRF.formField
+        <input type="hidden" name="id" value="@form("id").value">
+        <input type="text" name="username" value="@form("username").value">
+        <input type="password" name="password">
+        <input type="password" name="verifyPassword">
+        <input type="submit">
+    }
+}
