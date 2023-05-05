@@ -1,7 +1,14 @@
 @import helper._
 @import service.UserService.LoginData
-@(form: Form[LoginData])(implicit request: RequestHeader, messages: Messages)
+@(form: Form[LoginData], failedLogin: Boolean = false)(implicit request: RequestHeader, messages: Messages)
 
+@if(failedLogin) {
+    <div class="m-3">
+        <div class="alert alert-danger" role="alert">
+            @Messages("login.failed")
+        </div>
+    </div>
+}
 
 @helper.form(action = routes.UserController.login(), Symbol("id") -> "login-form") {
     @CSRF.formField

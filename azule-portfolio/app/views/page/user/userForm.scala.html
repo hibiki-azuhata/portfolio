@@ -20,7 +20,7 @@
     }
     @helper.form(
         action = formCall,
-        Symbol("id") -> s"manage-user-form-${form("id").value.fold("new")(id => id)}",
+        Symbol("id") -> s"manage-user-form-${form("id").value.fold("new")(id => if(id.size > 0) { id } else { "new" })}",
         Symbol("data-window-id") -> clazz
     ) {
         @CSRF.formField

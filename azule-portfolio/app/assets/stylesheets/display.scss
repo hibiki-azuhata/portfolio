@@ -234,6 +234,37 @@ html,body {
     @include production-item
 }
 
+.alert-icon {
+    font-size: 60px;
+    margin-top: 15px;
+    color: red;
+}
+
+.alert-text {
+    font-size: 20px;
+    margin-top: 45px;
+}
+
+#window-alert-unauthorized > .main-window-content {
+    background-color: #bdbdbd;
+    border: 0px;
+}
+
+#alert-unauthorized-ok {
+    @include windowFrame(2px, #bdbdbd)
+    padding: 0 50px;
+}
+
+#alert-unauthorized-ok:active {
+    @include windowFrameR(2px, #bdbdbd)
+    padding: 0 50px;
+}
+
+.unauthorized-button {
+    margin-top: 20px;
+    text-align: center;
+}
+
 .test-square {
     display: inline-block;
     background-color: red;
@@ -249,15 +280,8 @@ html,body {
 }
 
 .sub-window {
-    top: calc(4%);
-    left: calc(3%);
-    width: 60%;
-    height: 60%;
-}
-
-.subsub-window {
-    top: calc(6%);
-    left: calc(1%);
-    width: 40%;
-    height: 40%;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 250px;
 }

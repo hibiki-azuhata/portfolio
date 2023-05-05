@@ -19,7 +19,7 @@ trait ProductionService {
 
 object ProductionService {
   case class ProductionData(
-    id: Option[Long],
+    id: Option[Long] = None,
     title: String,
     content: String,
     thumbnail: String,
@@ -27,7 +27,7 @@ object ProductionService {
   )
 
   case class ProductionInfoData(
-    id: Option[Long],
+    id: Option[Long] = None,
     title: String,
     content: String,
     thumbnail: String

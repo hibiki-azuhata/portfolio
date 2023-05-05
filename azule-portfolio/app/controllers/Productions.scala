@@ -44,7 +44,7 @@ class Productions @Inject()(
     )
   }
 
-  def show(id: Long) = authDemoAction { implicit request =>
+  def show(id: Long) = Action { implicit request =>
     productionService.find(id).fold {
       BadRequest(s"not found production Id $id")
     } { p =>
@@ -55,12 +55,13 @@ class Productions @Inject()(
   def create() = authAction(parse.multipartFormData) { implicit request =>
     productionForm.bindFromRequest().fold(
       formWithErrors => {
+        println(formWithErrors("id").value)
         BadRequest(views.html.page.production.productionForm(
           Messages("manage.production.create"),
           "window-new-production",
           formWithErrors,
-          routes.Productions.create())
-        )
+          routes.Productions.create()
+        ))
       },
       data => {
         Images.upload("thumbnail_image", s"${data.title}_").fold {

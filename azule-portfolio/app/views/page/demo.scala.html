@@ -3,8 +3,20 @@
 
 @()(implicit req: RequestHeader, messages: Messages)
 
-@windowBase("けいこく", "subsub-window", "window-alert-"){
+@windowBase(Messages("alert.title"), "sub-window", "window-alert-unauthorized"){
     @HtmlFormat.empty
 } {
-    <h1>デモユーザーのため、この機能は利用できません</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 alert-icon">
+            <i class="bi bi-x-circle-fill"></i>
+        </div>
+        <div class="col-10 alert-text">
+            @Messages("alert.text")
+        </div>
+    </div>
+    <div class="unauthorized-button">
+        <input type="button" id="alert-unauthorized-ok" value="@Messages("alert.ok")">
+    </div>
+</div>
 }

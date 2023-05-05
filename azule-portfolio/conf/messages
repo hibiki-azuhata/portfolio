@@ -44,5 +44,10 @@ login.username=ユーザー名
 login.password=パスワード
 login.submit=ログイン
 login.submit.dummy=デモユーザーとしてログイン
+login.failed=ユーザー名あるいはパスワードが間違っています
+
+alert.title=警告
+alert.text=デモユーザーのため、この機能を利用する権限はありません
+alert.ok=OK
 
 manage.page={0} (編集)

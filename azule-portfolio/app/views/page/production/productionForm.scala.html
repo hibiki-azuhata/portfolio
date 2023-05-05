@@ -21,7 +21,7 @@
     @helper.form(
         action = formCall,
         Symbol("enctype") -> "multipart/form-data",
-        Symbol("id") -> s"manage-production-form-${form("id").value.fold("new")(id => id)}",
+        Symbol("id") -> s"manage-production-form-${form("id").value.fold("new")(id => if(id.size > 0) { id } else { "new" })}",
         Symbol("data-window-id") -> clazz
     ) {
         <div class="m-3">

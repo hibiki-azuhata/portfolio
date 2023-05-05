@@ -17,7 +17,9 @@ function registerLoginForm() {
             },
             error: function(data) {
                 if(data.status != 401) {
-                    $('.start-menu').empty().append(data);
+                    $('.start-menu').empty().append(data.responseText);
+                    registerLoginForm();
+                    registerLoginDemo();
                 }
             }
         });
@@ -246,6 +248,7 @@ function registerManageProductionForm(objId, productionMethod) {
                 closeWindow($('#' + windowId));
             },
             error: function(data) {
+                console.log(data.status);
                 if(data.status != 401) {
                     reloadWindow(data.responseText, function() { registerManageProductionForm(objId, productionMethod); });
                 }
@@ -420,6 +423,7 @@ $(function(){
             $(this).addClass('window-button-clicked');
             jsRoutes.controllers.UserController.control().ajax({
                 method: 'GET',
+                global: false,
                 success: function(data) {
                     insertStartMenu(data);
                     registerDblclick('manage-production', jsRoutes.controllers.Productions.index(), registerManageProduction);
@@ -453,15 +457,27 @@ $(function(){
     registerDblclick('work', jsRoutes.controllers.IntroductionController.work(), registerWork);
     registerDblclick('about', jsRoutes.controllers.IntroductionController.about());
 
-    $('.display-icon').on('selectstart', function(){
-        return false;
-    });
-    $('.start-menu-content').on('selectstart', function(){
+    $(document).on('selectstart', function(){
         return false;
     });
 
     $(document).ajaxError(function(event, jqxhr, settings, exception) {
-        console.log(exception);
+        if(exception == "Unauthorized") {
+            checkWindowExists('#window-alert-unauthorized', function(){
+                jsRoutes.controllers.UserController.demoAlert().ajax({
+                    success: function(data) {
+                        var alertWindow = showWindow(data);
+                        alertWindow.resizable("destroy");
+                        alertWindow.find('.window-title-page').remove();
+                        $('#alert-unauthorized-ok').click(function(){
+                            closeWindow(alertWindow);
+                        });
+                    }
+
+
+                });
+            });
+        }
     });
 
     loadWindow($('.window'));

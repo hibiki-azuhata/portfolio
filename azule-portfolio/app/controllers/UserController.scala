@@ -37,10 +37,10 @@ class UserController @Inject()(
   )
   def login() = Action { implicit request =>
     loginForm.bindFromRequest().fold(
-      _ => BadRequest(views.html.start.login(loginForm)),
+      _ => BadRequest(views.html.start.login(loginForm, true)),
       data => {
         userService.createUUID(data).fold {
-          Unauthorized(views.html.start.login(loginForm))
+          BadRequest(views.html.start.login(loginForm, true))
         } { uuid =>
           Ok.withSession(LOGIN_SESSION -> uuid)
         }
@@ -127,6 +127,10 @@ class UserController @Inject()(
   def remove(id: Long) = authAction { implicit request =>
     userService.remove(id)
     Ok
+  }
+
+  def demoAlert() = Action { implicit request =>
+    Ok(views.html.page.demo())
   }
 
   def control() = authDemoAction { implicit request =>
