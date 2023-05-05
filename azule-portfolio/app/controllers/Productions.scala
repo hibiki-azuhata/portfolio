@@ -11,6 +11,7 @@ import javax.inject.Inject
 
 class Productions @Inject()(
   authAction: AuthAction,
+  authDemoAction: AuthWithDemo,
   val productionService: ProductionService
 )(implicit val cc: ControllerComponents) extends Controller {
 
@@ -23,15 +24,15 @@ class Productions @Inject()(
     )(ProductionInfoData.apply)(ProductionInfoData.unapply)
   )
 
-  def index() = authAction { implicit request =>
+  def index() = authDemoAction { implicit request =>
     Ok(views.html.page.manageProduction(productionService.load))
   }
 
-  def add() = authAction { implicit request =>
+  def add() = authDemoAction { implicit request =>
     Ok(views.html.page.production.productionForm(Messages("manage.production.create"), "window-new-production", productionForm, routes.Productions.create()))
   }
 
-  def edit(id: Long) = authAction { implicit request =>
+  def edit(id: Long) = authDemoAction { implicit request =>
     productionService.find(id).fold(
       BadRequest(views.html.page.production.productionForm(Messages("manage.production.create"), "window-new-production", productionForm, routes.Productions.create()))
     )( production =>
@@ -43,7 +44,7 @@ class Productions @Inject()(
     )
   }
 
-  def show(id: Long) = authAction { implicit request =>
+  def show(id: Long) = authDemoAction { implicit request =>
     productionService.find(id).fold {
       BadRequest(s"not found production Id $id")
     } { p =>

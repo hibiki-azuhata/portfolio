@@ -10,6 +10,7 @@ import javax.inject.Inject
 
 class Pages @Inject()(
   authAction: AuthAction,
+  authDemoAction: AuthWithDemo,
   val pageService: PageService
 )(implicit val cc: ControllerComponents) extends Controller {
 
@@ -22,11 +23,11 @@ class Pages @Inject()(
 
   private def windowId(ct: String): String = s"window-edit-page-$ct"
 
-  def index() = authAction { implicit request =>
+  def index() = authDemoAction { implicit request =>
     Ok(views.html.page.managePage())
   }
 
-  def edit(contentType: String) = authAction { implicit request =>
+  def edit(contentType: String) = authDemoAction { implicit request =>
     pageService.load(ContentType.find(contentType)) match {
       case page if page.contentType == ContentType.Dummy =>
         BadRequest

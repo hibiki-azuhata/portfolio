@@ -1,7 +1,7 @@
 package controllers
 
 import controllers.AuthAction.LOGIN_SESSION
-import controllers.AuthActionDemo.DUMMY_SESSION
+import controllers.AuthWithDemo.DUMMY_SESSION
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.Messages
@@ -14,6 +14,7 @@ import javax.inject.Inject
 class UserController @Inject()(
   userService: UserService,
   authAction: AuthAction,
+  authDemoAction: AuthWithDemo,
   implicit val cc: ControllerComponents
 ) extends Controller with LoginSupport {
 
@@ -128,7 +129,7 @@ class UserController @Inject()(
     Ok
   }
 
-  def control() = authAction { implicit request =>
+  def control() = authDemoAction { implicit request =>
     Ok(views.html.start.control())
   }
 

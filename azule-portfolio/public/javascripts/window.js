@@ -16,7 +16,9 @@ function registerLoginForm() {
                 closeStartMenu();
             },
             error: function(data) {
-                $('.start-menu').empty().append(data);
+                if(data.status != 401) {
+                    $('.start-menu').empty().append(data);
+                }
             }
         });
     });
@@ -31,7 +33,9 @@ function registerLoginDemo() {
                 closeStartMenu();
             },
             error: function(data) {
-                $('.start-menu').empty().append(data);
+                if(data.status != 401) {
+                    $('.start-menu').empty().append(data);
+                }
             }
         });
     });
@@ -48,7 +52,9 @@ function registerLogoutForm() {
                 closeStartMenu();
             },
             error: function(data) {
-                $('.start-menu').empty().append(data);
+                if(data.status != 401) {
+                    $('.start-menu').empty().append(data);
+                }
             }
         });
     });
@@ -173,14 +179,22 @@ function reloadWindow(_data, registerAction) {
 function reloadManageUser(registerAction) {
     jsRoutes.controllers.UserController.index().ajax({
         success: function(data) { reloadWindow(data, registerAction); },
-        error: function(data) { reloadWindow(data, registerAction); }
+        error: function(data) {
+            if(data.status != 401) {
+                reloadWindow(data, registerAction);
+            }
+        }
     });
 }
 
 function reloadManageImage() {
     jsRoutes.controllers.Images.index().ajax({
         success: function(data) { reloadWindow(data); },
-        error: function(data) { reloadWindow(data); }
+        error: function(data) {
+            if(data.status != 401) {
+                reloadWindow(data);
+            }
+        }
     });
 }
 
@@ -208,7 +222,9 @@ function registerDblclick(id, url, registerAction) {
                     if(registerAction != undefined) registerAction();
                 },
                 error: function(data) {
-                    showWindow(data);
+                    if(data.status != 401) {
+                        showWindow(data);
+                    }
                 }
             });
         });
@@ -230,7 +246,9 @@ function registerManageProductionForm(objId, productionMethod) {
                 closeWindow($('#' + windowId));
             },
             error: function(data) {
-                reloadWindow(data.responseText, function() { registerManageProductionForm(objId, productionMethod); });
+                if(data.status != 401) {
+                    reloadWindow(data.responseText, function() { registerManageProductionForm(objId, productionMethod); });
+                }
             }
         });
     });
@@ -251,7 +269,9 @@ function registerManagePageForm(objId) {
                 closeWindow($('#' + windowId));
             },
             error: function(data) {
-                reloadWindow(data.responseText, function() { registerManagePageForm(objId); });
+                if(data.status != 401) {
+                    reloadWindow(data.responseText, function() { registerManagePageForm(objId); });
+                }
             }
         });
     });
@@ -272,7 +292,9 @@ function registerManageImageForm(objId, imageMethod) {
                 closeWindow($('#' + windowId));
             },
             error: function(data) {
-                reloadWindow(data.responseText, function() { registerManageImageForm(objId, imageMethod); });
+                if(data.status != 401) {
+                    reloadWindow(data.responseText, function() { registerManageImageForm(objId, imageMethod); });
+                }
             }
         });
     });
@@ -293,7 +315,9 @@ function registerManageUserForm(objId, userMethod) {
                 reloadManageUser(registerManageUser);
             },
             error: function(data) {
-                reloadWindow(data.responseText, function() { registerManageUserForm(objId, userMethod); });
+                if(data.status != 401) {
+                    reloadWindow(data.responseText, function() { registerManageUserForm(objId, userMethod); });
+                }
             }
         });
     });
@@ -342,7 +366,9 @@ function registerManageImage() {
                         reloadManageImage(registerManageImage);
                     },
                     error: function() {
-                        reloadManageImage(registerManageImage);
+                        if(data.status != 401) {
+                            reloadManageImage(registerManageImage);
+                        }
                     }
                 });
             });
@@ -369,7 +395,9 @@ function registerManageUser() {
                         reloadManageUser(registerManageUser);
                     },
                     error: function() {
-                        reloadManageUser(registerManageUser);
+                        if(data.status != 401) {
+                            reloadManageUser(registerManageUser);
+                        }
                     }
                 });
             });
@@ -430,6 +458,10 @@ $(function(){
     });
     $('.start-menu-content').on('selectstart', function(){
         return false;
+    });
+
+    $(document).ajaxError(function(event, jqxhr, settings, exception) {
+        console.log(exception);
     });
 
     loadWindow($('.window'));

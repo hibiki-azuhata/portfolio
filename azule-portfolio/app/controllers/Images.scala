@@ -13,6 +13,7 @@ import scala.concurrent.ExecutionContext
 
 class Images @Inject()(
   authAction: AuthAction,
+  authDemoAction: AuthWithDemo,
   val imageService: ImageService
 )(implicit val cc: ControllerComponents) extends Controller {
 
@@ -20,7 +21,7 @@ class Images @Inject()(
     "alt" -> nonEmptyText
   )
 
-  def index() = authAction { implicit request =>
+  def index() = authDemoAction { implicit request =>
     Ok(views.html.page.manageImage(imageService.list))
   }
 
@@ -29,7 +30,7 @@ class Images @Inject()(
     Ok
   }
 
-  def show(id: Long) = authAction { implicit request =>
+  def show(id: Long) = authDemoAction { implicit request =>
     imageService.load(id).fold {
       BadRequest("")
     } { image =>
@@ -53,7 +54,7 @@ class Images @Inject()(
     )
   }
 
-  def get(filename: String) = authAction { implicit request =>
+  def get(filename: String) = Action { implicit request =>
     implicit val ec: ExecutionContext = cc.executionContext
     Ok.sendFile(
       content = new java.io.File(s"$IMAGE_PATH/$filename"),

@@ -1,0 +1,10 @@
+@import play.twirl.api.HtmlFormat
+@import window._
+
+@()(implicit req: RequestHeader, messages: Messages)
+
+@windowBase("けいこく", "subsub-window", "window-alert-"){
+    @HtmlFormat.empty
+} {
+    <h1>デモユーザーのため、この機能は利用できません</h1>
+}

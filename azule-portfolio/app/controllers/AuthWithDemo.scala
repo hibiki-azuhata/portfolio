@@ -1,7 +1,7 @@
 package controllers
 
 import controllers.AuthAction.LOGIN_SESSION
-import controllers.AuthActionDemo.DUMMY_SESSION
+import controllers.AuthWithDemo.DUMMY_SESSION
 import play.api.cache.SyncCacheApi
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Results.Unauthorized
@@ -31,7 +31,7 @@ class AuthWithDemo @Inject()(
   override def messagesApi: MessagesApi = cc.messagesApi
 }
 
-object AuthActionDemo {
+object AuthWithDemo {
   val DUMMY_SESSION = "dummy-user"
 
   def nonDummy(implicit request: Request[_]): Boolean = request.session.get(DUMMY_SESSION).isEmpty
