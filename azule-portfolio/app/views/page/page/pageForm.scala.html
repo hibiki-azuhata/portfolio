@@ -19,7 +19,11 @@
         @CSRF.formField
         <input type="hidden" name="contentType" value="@form("contentType").value">
         <textarea class="page-content" name="content" value="@form("content").value"></textarea>
-        <input type="submit">
+        <div class="m-3">
+            <div class="d-grid gap-2">
+                <input class="btn btn-primary" type="submit" value="@Messages("manage.page.submit")">
+            </div>
+        </div>
     }
     <script>
         $(document).ready(function() {

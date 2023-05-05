@@ -57,24 +57,27 @@ class UserController @Inject()(
   def index() = authAction { implicit request =>
     Ok(views.html.page.manageUser(userService.list))
   }
-  def createPage() = authAction { implicit request =>
-    Ok(
-      views.html.page.user.userForm(
-        routes.UserController.create(),
-        "window-edit-user-new",
-        userForm(true)
-      )
-    )
-  }
 
-  def updatePage(id: Long) = authAction { implicit request =>
-    Ok(
-      views.html.page.user.userForm(
-        routes.UserController.create(),
-        s"window-edit-user-$id",
-        userForm(false)
+  def edit(idOpt: Option[Long]) = authAction { implicit request =>
+    idOpt.flatMap(userService.load).map { user =>
+      (user.id, UserData(Some(user.id), user.name, user.password))
+    }.fold {
+      Ok(
+        views.html.page.user.userForm(
+          routes.UserController.create(),
+          "window-edit-user-new",
+          userForm(true)
+        )
       )
-    )
+    } { case (id, data) =>
+      Ok(
+        views.html.page.user.userForm(
+          routes.UserController.update(),
+          s"window-edit-user-$id",
+          userForm(false).fill(data)
+        )
+      )
+    }
   }
 
   def create() = authAction { implicit request =>
@@ -89,7 +92,7 @@ class UserController @Inject()(
         ),
       data => {
         userService.create(data)
-        Ok(Messages("success"))
+        Ok
       }
     )
   }
@@ -106,9 +109,14 @@ class UserController @Inject()(
         ),
       data => {
         userService.update(data)
-        Ok(Messages("success"))
+        Ok
       }
     )
+  }
+
+  def remove(id: Long) = authAction { implicit request =>
+    userService.remove(id)
+    Ok
   }
 
   def control() = authAction { implicit request =>

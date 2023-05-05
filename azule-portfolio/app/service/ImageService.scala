@@ -6,10 +6,12 @@ trait ImageService {
 
   def create(path: String, alt: String): Image
 
-  def load(id: Int): Option[Image]
+  def load(id: Long): Option[Image]
 
-  def update(id: Int, alt: String): Option[Image]
+  def list: Seq[Image]
 
-  def delete(id: Int): Boolean
+  def update(id: Long, alt: String): Option[Image]
+
+  def delete(id: Long): Boolean
 
 }

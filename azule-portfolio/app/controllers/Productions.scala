@@ -58,7 +58,7 @@ class Productions @Inject()(
           BadRequest(views.html.production.form.productionForm(productionForm.fill(data))) // need thumbnail image
         } { thumbnailPath =>
           Ok(views.html.page.production.show(productionService.create(
-            data.toProductionData(Images.getName(thumbnailPath), Nil, Nil)
+            data.toProductionData(Images.getName(thumbnailPath), Nil)
           )))
         }
       }
@@ -72,7 +72,7 @@ class Productions @Inject()(
       },
       data => {
         val newThumbnail = Images.upload("thumbnail_image", s"${data.title}_")
-        productionService.update(data.toProductionData(newThumbnail.getOrElse(data.thumbnail), Nil, Nil)).fold {
+        productionService.update(data.toProductionData(newThumbnail.map(Images.getName).getOrElse(data.thumbnail), Nil)).fold {
           NotFound(Messages("production.update.notFound"))
         } { production =>
           Ok(views.html.page.production.show(production))

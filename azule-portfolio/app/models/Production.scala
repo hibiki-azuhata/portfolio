@@ -8,8 +8,7 @@ case class Production(
   title: String,
   content: String,
   thumbnail: String,
-  images: Seq[Image] = Nil,
-  tags: Seq[Tag] = Nil
+  images: Seq[Image] = Nil
 )
 
 object Production extends SkinnyCRUDMapper[Production] {
@@ -26,8 +25,7 @@ object Production extends SkinnyCRUDMapper[Production] {
     title: String,
     content: String,
     thumbnail: String,
-    imageIds: Seq[Long],
-    tagIds: Seq[Long]
+    imageIds: Seq[Long]
   ): Production = {
     val pId = Production.createWithNamedValues(
       column.title -> title,
@@ -35,21 +33,13 @@ object Production extends SkinnyCRUDMapper[Production] {
       column.thumbnail -> thumbnail
     )
     ProductionImage.create(pId, imageIds)
-    ProductionTag.create(pId, tagIds)
     val imageObjects = if(imageIds.isEmpty) Nil else Image.findAllBy(sqls.in(Image.column.id, imageIds))
-    val tagObjects = if(tagIds.isEmpty) Nil else Tag.findAllBy(sqls.in(Tag.column.id, tagIds))
-    Production(pId, title, content, thumbnail, imageObjects, tagObjects)
+    Production(pId, title, content, thumbnail, imageObjects)
   }
 
   hasManyThrough[Image](
     through = ProductionImage,
     many = Image,
     merge = (p, images) => p.copy(images = images)
-  ).byDefault
-
-  hasManyThrough[Tag](
-    through = ProductionTag,
-    many = Tag,
-    merge = (p, tags) => p.copy(tags = tags)
   ).byDefault
 }

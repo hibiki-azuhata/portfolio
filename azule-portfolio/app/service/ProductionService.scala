@@ -23,8 +23,7 @@ object ProductionService {
     title: String,
     content: String,
     thumbnail: String,
-    images: Seq[ImageData],
-    tagIds: Seq[Long]
+    images: Seq[ImageData]
   )
 
   case class ProductionInfoData(
@@ -33,14 +32,13 @@ object ProductionService {
     content: String,
     thumbnail: String
   ) {
-    def toProductionData(thumbnail: String, images: Seq[ImageData], tagIds: Seq[Long]) = {
+    def toProductionData(thumbnail: String, images: Seq[ImageData]) = {
       ProductionData(
         this.id,
         this.title,
         this.content,
         thumbnail,
-        images,
-        tagIds
+        images
       )
     }
   }

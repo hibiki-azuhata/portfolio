@@ -19,6 +19,24 @@ class Images @Inject()(
   private def imageForm = Form(
     "alt" -> nonEmptyText
   )
+
+  def index() = authAction { implicit request =>
+    Ok(views.html.page.manageImage(imageService.list))
+  }
+
+  def remove(id: Long) = authAction { implicit request =>
+    imageService.delete(id)
+    Ok
+  }
+
+  def show(id: Long) = authAction { implicit request =>
+    imageService.load(id).fold {
+      BadRequest("")
+    } { image =>
+      Ok(views.html.page.image.show(image))
+    }
+  }
+
   def upload() = authAction(parse.multipartFormData) { implicit request =>
     imageForm.bindFromRequest().fold(
       _ => {
@@ -33,7 +51,6 @@ class Images @Inject()(
         }
       }
     )
-
   }
 
   def get(filename: String) = authAction { implicit request =>

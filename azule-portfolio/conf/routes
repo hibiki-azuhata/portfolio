@@ -5,7 +5,7 @@ GET     /work                       controllers.IntroductionController.work()
 GET     /about                      controllers.IntroductionController.about()
 
 # Productions
-GET     /productions/manage         controllers.Productions.index()
+GET     /productions                controllers.Productions.index()
 POST    /productions/create         controllers.Productions.create()
 POST    /productions/update         controllers.Productions.update()
 GET     /productions/add            controllers.Productions.add()
@@ -13,21 +13,24 @@ GET     /productions/edit/:id       controllers.Productions.edit(id: Long)
 GET     /productions/:id            controllers.Productions.show(id: Long)
 
 # Pages
-GET     /pages/manage               controllers.Pages.index()
+GET     /pages                      controllers.Pages.index()
 GET     /pages/edit/:contentType    controllers.Pages.edit(contentType: String)
 POST    /page/update                controllers.Pages.update()
 
 # Images
+GET     /image                      controllers.Images.index()
+GET     /image/show/:id             controllers.Images.show(id: Long)
+POST    /image/remove/:id           controllers.Images.remove(id: Long)
 POST    /image/upload               controllers.Images.upload()
 GET     /image/get/:filename        controllers.Images.get(filename: String)
 
 # UserController
 GET     /login                      controllers.UserController.control()
 GET     /users                      controllers.UserController.index()
-GET     /users/create               controllers.UserController.createPage()
+GET     /users/edit                 controllers.UserController.edit(idOpt: Option[Long] ?= None)
 POST    /users/create               controllers.UserController.create()
-GET     /users/update/:id           controllers.UserController.updatePage(id: Long)
 POST    /users/update               controllers.UserController.update()
+POST    /users/remove/:id           controllers.UserController.remove(id: Long)
 POST    /login                      controllers.UserController.login()
 POST    /logout                     controllers.UserController.logout()
 

@@ -17,13 +17,25 @@
         Symbol("id") -> s"manage-production-form-${form("id").value.fold("new")(id => id)}",
         Symbol("data-window-id") -> clazz
     ) {
-        @CSRF.formField
-        <input type="hidden" name="id" value="@form("id").value">
-        @helper.inputText(form("title"))
-        <input type="file" name="thumbnail_image">
-        <input type="hidden" name="thumbnail" value="@form("thumbnail").value">
-        <textarea class="production-content" name="content" value="@form("content").value"></textarea>
-        <input type="submit">
+        <div class="m-3">
+            @CSRF.formField
+            <input type="hidden" name="id" value="@form("id").value">
+            <div class="form-floating mb-3">
+                <input id="title-@clazz" type="text" class="form-control" name="title" value="@form("title").value" placeholder="Title">
+                <label for="title-@clazz">@Messages("manage.production.title")</label>
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text">@Messages("manage.production.thumbnail")</label>
+                <input class="form-control" type="file" id="thumbnail-@clazz" name="thumbnail_image" placeholder="Thumbnail">
+            </div>
+            <input type="hidden" name="thumbnail" value="@form("thumbnail").value">
+            <textarea class="production-content" name="content" value="@form("content").value"></textarea>
+            <div class="mt-3">
+                <div class="d-grid gap-2">
+                    <input class="btn btn-primary" type="submit" value="@Messages("manage.user.submit")">
+                </div>
+            </div>
+        </div>
     }
     <script>
         $(document).ready(function() {

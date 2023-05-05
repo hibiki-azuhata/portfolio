@@ -5,8 +5,16 @@
 
 @helper.form(action = routes.UserController.login(), Symbol("id") -> "login-form") {
     @CSRF.formField
-    @helper.inputText(form("name"))
-    @helper.inputPassword(form("password"))
-    <input id="login-page-submit" type="submit">
+    <div class="form-floating m-3">
+        <input id="login-username" type="text" class="form-control" name="name" value="@form("name").value" placeholder="Username">
+        <label for="login-username">@Messages("login.username")</label>
+    </div>
+    <div class="form-floating m-3">
+        <input id="login-password" type="password" class="form-control" value="" name="password" placeholder="Password">
+        <label for="login-password">@Messages("login.password")</label>
+    </div>
+    <div class="m-3">
+        <input id="login-page-submit" class="btn btn-primary" type="submit" value="@Messages("login.submit")">
+    </div>
 }
 

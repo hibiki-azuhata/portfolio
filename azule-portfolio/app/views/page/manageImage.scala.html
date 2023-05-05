@@ -1,0 +1,20 @@
+@import window._
+@import models.Image
+
+@(images: Seq[Image])(implicit req: RequestHeader, messages: Messages)
+
+@windowBase(Messages("window.name.manageImage"), "main-window", "window-manage-image"){
+    <ul>
+        <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
+        <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
+        <li class="window-menu-content">@Html(Messages("window.menu.search"))</li>
+        <li class="window-menu-content menu-reload">@Html(Messages("window.menu.reload"))</li>
+    </ul>
+} {
+    @for(i <- images) {
+        <div id="icon-edit-image-@{i.id}" class="manage-image-item" >
+            <img src="@routes.Images.get(s"${i.alt}_image.png")" alt="@{i.alt}" width="100px" height="100px">
+            <p>@{i.alt}</p>
+        </div>
+    }
+}

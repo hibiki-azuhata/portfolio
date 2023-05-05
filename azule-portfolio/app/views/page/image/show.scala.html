@@ -1,0 +1,19 @@
+@import window._
+@import models.Image
+
+@(image: Image)(implicit req: RequestHeader, messages: Messages)
+
+@windowBase(image.alt, "main-window", "window-image-" + image.id){
+<ul>
+    <li class="window-menu-content">@Html(Messages("window.menu.file"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.edit"))</li>
+    <li class="window-menu-content">@Html(Messages("window.menu.search"))</li>
+    <li class="window-menu-content menu-reload">@Html(Messages("window.menu.reload"))</li>
+</ul>
+} {
+    <div class="d-grid gap-2">
+        <input id="button-remove-image-@{image.id}" type="button" class="btn btn-danger" value="@Messages("manage.image.remove")" data-url="@helper.CSRF(routes.Images.remove(image.id))">
+    </div>
+    <img src="@routes.Images.get(s"${image.alt}_image.png")" alt="@{image.alt}" width="100%" height="auto">
+    <p>@{image.alt}</p>
+}

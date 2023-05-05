@@ -146,12 +146,27 @@ function showWindow(data) {
     return loadWindow(addWindow);
 }
 
-function reloadWindow(_data) {
+function reloadWindow(_data, registerAction) {
     var data = $(_data);
     var id = data.attr('id');
     var targetWindow = $('#' + id);
     targetWindow.find('.main-window-content').remove();
-    targetWindow.find('.window-menu').after(data);
+    targetWindow.find('.window-menu').after(data.find('.main-window-content'));
+    if(registerAction != undefined) registerAction();
+}
+
+function reloadManageUser(registerAction) {
+    jsRoutes.controllers.UserController.index().ajax({
+        success: function(data) { reloadWindow(data, registerAction); },
+        error: function(data) { reloadWindow(data, registerAction); }
+    });
+}
+
+function reloadManageImage() {
+    jsRoutes.controllers.Images.index().ajax({
+        success: function(data) { reloadWindow(data); },
+        error: function(data) { reloadWindow(data); }
+    });
 }
 
 function checkWindowExists(id, action) {
@@ -229,6 +244,28 @@ function registerManagePageForm(objId) {
     });
 }
 
+function registerManageImageForm(objId, imageMethod) {
+    $('#manage-image-form-' + objId).submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData($(this).get()[0]);
+        var windowId = $(this).data('window-id');
+        imageMethod.ajax({
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                showWindow(data);
+                closeWindow($('#' + windowId));
+            },
+            error: function(data) {
+                showWindow(data);
+                console.log("TODO badrequestの処理"); // flashのような領域を作って表示するようにする もしくはformとか？
+            }
+        });
+    });
+}
+
 function registerManageUserForm(objId, userMethod) {
     $('#manage-user-form-' + objId).submit(function(e) {
         e.preventDefault();
@@ -240,7 +277,8 @@ function registerManageUserForm(objId, userMethod) {
             processData: false,
             contentType: false,
             success: function(data) {
-                reloadWindow(data);
+                closeWindow($('#' + windowId));
+                reloadManageUser(registerManageUser);
             },
             error: function(data) {
                 reloadWindow(data);
@@ -277,16 +315,51 @@ function registerManagePage() {
     });
 }
 
+function registerManageImage() {
+    $('#window-manage-image > .main-window-content > .manage-image-item').each(function(){
+        var id = $(this).attr('id');
+        var iconId = id.replace('icon-', '');
+        var objId = id.replace('icon-edit-image-', '');
+        registerDblclick(iconId, jsRoutes.controllers.Images.show(objId), function(){
+            $('#button-remove-image-' + objId).click(function(){
+                $.ajax({
+                    url: $(this).data('url'),
+                    method: 'POST',
+                    success: function() {
+                        closeWindow($('#window-image-' + objId));
+                        reloadManageImage(registerManageImage);
+                    },
+                    error: function() {
+                        reloadManageImage(registerManageImage);
+                    }
+                });
+            });
+        });
+    });
+}
+
 function registerManageUser() {
-    $('#window-manage-user > .main-window-content > .manage-user-item').each(function(){
+    $('#window-manage-user > .main-window-content .manage-user-item').each(function(){
         var id = $(this).data('id');
         if(!id){
-            registerDblclick('edit-user-new', jsRoutes.controllers.UserController.createPage(), function() {
+            registerDblclick('edit-user-new', jsRoutes.controllers.UserController.edit(), function() {
                 registerManageUserForm('new', jsRoutes.controllers.UserController.create());
             });
         } else {
-            registerDblclick('edit-user' + id, jsRoutes.controllers.UserController.updatePage(), function() {
+            registerDblclick('edit-user-' + id, jsRoutes.controllers.UserController.edit(id), function() {
                 registerManageUserForm(id, jsRoutes.controllers.UserController.update(id));
+            });
+            $('#button-remove-user-' + id).click(function(){
+                $.ajax({
+                    url: $(this).data('url'),
+                    method: 'POST',
+                    success: function() {
+                        reloadManageUser(registerManageUser);
+                    },
+                    error: function() {
+                        reloadManageUser(registerManageUser);
+                    }
+                });
             });
         }
     });
@@ -311,6 +384,7 @@ $(function(){
                     insertStartMenu(data);
                     registerDblclick('manage-production', jsRoutes.controllers.Productions.index(), registerManageProduction);
                     registerDblclick('manage-page', jsRoutes.controllers.Pages.index(), registerManagePage);
+                    registerDblclick('manage-image', jsRoutes.controllers.Images.index(), registerManageImage);
                     registerDblclick('manage-user', jsRoutes.controllers.UserController.index(), registerManageUser);
                     registerLogoutForm()
                 },

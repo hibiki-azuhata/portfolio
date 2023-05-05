@@ -7,7 +7,7 @@ window.name.blog=ブログ
 window.name.manageProduction=制作物管理
 window.name.managePage=ページ管理
 window.name.manageUser=ユーザー管理
-window.name.manageBlog=ブログ管理
+window.name.manageImage=画像管理
 
 window.menu.file=ファイル(<u>F</u>)
 window.menu.edit=編集(<u>E</u>)
@@ -18,10 +18,30 @@ window.menu.help=ヘルプ(<u>H</u>)
 startMenu.login=ログイン
 startMenu.logout=ログアウト
 
+manage.page.manual=はじめに
+manage.page.about=プロフィール
+manage.page.submit=更新
 
 manage.production.create=新規作成
+manage.production.title=タイトル
+manage.production.thumbnail=サムネイル画像
 
 manage.user.table.id=#
 manage.user.table.username=ユーザー名
 manage.user.create=新規作成
+manage.user.username=ユーザー名
+manage.user.password=パスワード
+manage.user.password.verify=パスワード(確認)
+manage.user.placeholder.username=username
+manage.user.placeholder.password=password
+manage.user.placeholder.password.verify=password
+manage.user.submit=送信
+manage.user.remove=削除
+
+manage.image.remove=削除
+
+login.username=ユーザー名
+login.password=パスワード
+login.submit=ログイン
+
 manage.page={0} (編集)

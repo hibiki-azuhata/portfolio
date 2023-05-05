@@ -1,6 +1,6 @@
 package service.impl
 
-import models.{Image, Production, ProductionImage, ProductionTag}
+import models.{Image, Production, ProductionImage}
 import scalikejdbc.sqls
 import service.ProductionService
 import service.ProductionService.ProductionData
@@ -11,7 +11,7 @@ class ProductionServiceImpl extends ProductionService {
     val imageIds = data.images.map { i =>
       Image.create(i.url, i.alt).id
     }
-    Production.create(data.title, data.content, data.thumbnail, imageIds, data.tagIds)
+    Production.create(data.title, data.content, data.thumbnail, imageIds)
   }
 
   override def update(data: ProductionData): Option[Production] = {
@@ -23,13 +23,11 @@ class ProductionServiceImpl extends ProductionService {
         column.thumbnail -> data.thumbnail
       )
       Production.findById(id).foreach { base =>
-        ProductionTag.deleteBy(sqls.in(ProductionTag.column.tagId, base.tags.map(_.id)))
         ProductionImage.deleteBy(sqls.in(ProductionImage.column.imageId, base.images.map(_.id)))
 
         //val oldImageIds = base.images.map(_.id).diff(data.imageIds)
         //Image.deleteBy(sqls.in(Image.column.id, oldImageIds))
       }
-      ProductionTag.create(id, data.tagIds)
       //ProductionImage.create(id, data.imageIds)
 
       Production.findById(id)
@@ -49,7 +47,6 @@ class ProductionServiceImpl extends ProductionService {
       ProductionImage.findAllBy(sqls.eq(ProductionImage.column.productionId, id)).map(_.imageId)
     ))
     ProductionImage.deleteBy(sqls.eq(ProductionImage.column.productionId, id))
-    ProductionTag.deleteBy(sqls.eq(ProductionTag.column.productionId, id))
   }
 
 

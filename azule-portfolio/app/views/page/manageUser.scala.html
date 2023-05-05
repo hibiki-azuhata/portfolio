@@ -1,3 +1,4 @@
+@import helper._
 @import window._
 @import models.User
 
@@ -15,18 +16,23 @@
         <thead>
             <tr>
                 <th style="width: 30%;">@Messages("manage.user.table.id")</th>
-                <th style="width: 70%;">@Messages("manage.user.table.username")</th>
+                <th style="width: 60%;">@Messages("manage.user.table.username")</th>
+                <th style="width: 10%;"></th>
             </tr>
         </thead>
         <tbody>
             <tr id="icon-edit-user-new" class="manage-user-item">
                 <td></td>
                 <td>@Messages("manage.user.create")</td>
+                <td></td>
             </tr>
             @for(u <- users) {
                 <tr id="icon-edit-user-@{u.id}" class="manage-user-item" data-id="@{u.id}">
                     <td>@{u.id}</td>
                     <td>@{u.name}</td>
+                    <td class="d-grid gap-2">
+                        <input id="button-remove-user-@{u.id}" type="button" class="btn btn-danger" value="@Messages("manage.user.remove")" data-url="@helper.CSRF(routes.UserController.remove(u.id))">
+                    </td>
                 </tr>
             }
         </tbody>
