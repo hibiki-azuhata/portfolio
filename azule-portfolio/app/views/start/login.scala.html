@@ -16,5 +16,8 @@
     <div class="m-3">
         <input id="login-page-submit" class="btn btn-primary" type="submit" value="@Messages("login.submit")">
     </div>
+    <div class="m-3">
+        <input id="login-dummy-user" class="btn btn-primary" type="button" value="@Messages("login.submit.dummy")" data-url="@helper.CSRF(routes.UserController.demoLogin())">
+    </div>
 }
 

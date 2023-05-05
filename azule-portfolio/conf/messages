@@ -43,5 +43,6 @@ manage.image.remove=削除
 login.username=ユーザー名
 login.password=パスワード
 login.submit=ログイン
+login.submit.dummy=デモユーザーとしてログイン
 
 manage.page={0} (編集)

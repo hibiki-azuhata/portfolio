@@ -1,6 +1,7 @@
 package controllers
 
 import controllers.AuthAction.LOGIN_SESSION
+import controllers.AuthActionDemo.DUMMY_SESSION
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.Messages
@@ -40,15 +41,23 @@ class UserController @Inject()(
         userService.createUUID(data).fold {
           Unauthorized(views.html.start.login(loginForm))
         } { uuid =>
-          Ok(views.html.page.manual()).withSession(LOGIN_SESSION -> uuid)
+          Ok.withSession(LOGIN_SESSION -> uuid)
         }
       }
     )
   }
 
+  def demoLogin() = Action { implicit request =>
+    Ok.withSession(DUMMY_SESSION -> "dummy")
+  }
+
   def logout() = Action { implicit request =>
     request.session.get(LOGIN_SESSION).fold {
-      BadRequest(Messages("logout.error"))
+      request.session.get(DUMMY_SESSION).fold {
+        BadRequest(Messages("logout.error"))
+      } { _ =>
+        Ok(Messages("logout.success")).removingFromSession(DUMMY_SESSION)
+      }
     } { username =>
       Ok(Messages("logout.success", username)).removingFromSession(LOGIN_SESSION)
     }

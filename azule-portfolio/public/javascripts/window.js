@@ -22,6 +22,21 @@ function registerLoginForm() {
     });
 }
 
+function registerLoginDemo() {
+    $('#login-dummy-user').click(function() {
+        $.ajax({
+            url: $(this).data('url'),
+            method: 'POST',
+            success: function(data) {
+                closeStartMenu();
+            },
+            error: function(data) {
+                $('.start-menu').empty().append(data);
+            }
+        });
+    });
+}
+
 function registerLogoutForm() {
     $('#icon-logout').dblclick(function(e) {
         e.preventDefault();
@@ -215,8 +230,7 @@ function registerManageProductionForm(objId, productionMethod) {
                 closeWindow($('#' + windowId));
             },
             error: function(data) {
-                showWindow(data);
-                console.log("TODO badrequestの処理"); // flashのような領域を作って表示するようにする もしくはformとか？
+                reloadWindow(data.responseText, function() { registerManageProductionForm(objId, productionMethod); });
             }
         });
     });
@@ -237,8 +251,7 @@ function registerManagePageForm(objId) {
                 closeWindow($('#' + windowId));
             },
             error: function(data) {
-                showWindow(data);
-                console.log("TODO badrequestの処理"); // flashのような領域を作って表示するようにする もしくはformとか？
+                reloadWindow(data.responseText, function() { registerManagePageForm(objId); });
             }
         });
     });
@@ -259,8 +272,7 @@ function registerManageImageForm(objId, imageMethod) {
                 closeWindow($('#' + windowId));
             },
             error: function(data) {
-                showWindow(data);
-                console.log("TODO badrequestの処理"); // flashのような領域を作って表示するようにする もしくはformとか？
+                reloadWindow(data.responseText, function() { registerManageImageForm(objId, imageMethod); });
             }
         });
     });
@@ -281,7 +293,7 @@ function registerManageUserForm(objId, userMethod) {
                 reloadManageUser(registerManageUser);
             },
             error: function(data) {
-                reloadWindow(data);
+                reloadWindow(data.responseText, function() { registerManageUserForm(objId, userMethod); });
             }
         });
     });
@@ -298,7 +310,7 @@ function registerManageProduction() {
         } else {
             var objId = id.replace('icon-edit-production-', '');
             registerDblclick(iconId, jsRoutes.controllers.Productions.edit(objId), function() {
-                registerManageProductionForm(objId, jsRoutes.controllers.Productions.update());
+                registerManageProductionForm(objId, jsRoutes.controllers.Productions.update(objId));
             });
         }
     });
@@ -391,6 +403,7 @@ $(function(){
                 error: function(data) {
                     insertStartMenu(data.responseText);
                     registerLoginForm();
+                    registerLoginDemo();
                 }
             });
         } else {

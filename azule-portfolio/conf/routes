@@ -7,7 +7,7 @@ GET     /about                      controllers.IntroductionController.about()
 # Productions
 GET     /productions                controllers.Productions.index()
 POST    /productions/create         controllers.Productions.create()
-POST    /productions/update         controllers.Productions.update()
+POST    /productions/update/:id     controllers.Productions.update(id: Long)
 GET     /productions/add            controllers.Productions.add()
 GET     /productions/edit/:id       controllers.Productions.edit(id: Long)
 GET     /productions/:id            controllers.Productions.show(id: Long)
@@ -32,6 +32,7 @@ POST    /users/create               controllers.UserController.create()
 POST    /users/update               controllers.UserController.update()
 POST    /users/remove/:id           controllers.UserController.remove(id: Long)
 POST    /login                      controllers.UserController.login()
+POST    /login/demo                 controllers.UserController.demoLogin()
 POST    /logout                     controllers.UserController.logout()
 
 # Assets

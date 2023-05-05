@@ -11,6 +11,13 @@
         <li class="window-menu-content">@Html(Messages("window.menu.help"))</li>
     </ul>
 } {
+    @if(form.errors.nonEmpty) {
+        <div class="alert alert-danger" role="alert">
+            @form.errors.map { error =>
+            <div>@error.key : @error.message</div>
+            }
+        </div>
+    }
     @helper.form(
         action = formCall,
         Symbol("id") -> s"manage-user-form-${form("id").value.fold("new")(id => id)}",

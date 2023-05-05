@@ -1,6 +1,6 @@
 package controllers
 
-import play.api.data.Form
+import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.i18n.Messages
 import play.api.mvc.ControllerComponents
@@ -38,24 +38,38 @@ class Productions @Inject()(
       Ok(views.html.page.production.productionForm(
         Messages("manage.production.create"), s"window-edit-production-$id",
         productionForm.fill(ProductionInfoData.toProductionData(production)),
-        routes.Productions.update()
+        routes.Productions.update(id)
       ))
     )
   }
 
   def show(id: Long) = authAction { implicit request =>
-    Ok(views.html.page.production.show(productionService.load.find(_.id == id).get))
+    productionService.find(id).fold {
+      BadRequest(s"not found production Id $id")
+    } { p =>
+      Ok(views.html.page.production.show(p))
+    }
   }
 
   def create() = authAction(parse.multipartFormData) { implicit request =>
     productionForm.bindFromRequest().fold(
       formWithErrors => {
-        println(formWithErrors)
-        BadRequest(views.html.production.form.productionForm(formWithErrors))
+        BadRequest(views.html.page.production.productionForm(
+          Messages("manage.production.create"),
+          "window-new-production",
+          formWithErrors,
+          routes.Productions.create())
+        )
       },
       data => {
         Images.upload("thumbnail_image", s"${data.title}_").fold {
-          BadRequest(views.html.production.form.productionForm(productionForm.fill(data))) // need thumbnail image
+          val formData = productionForm.fill(data)
+          BadRequest(views.html.page.production.productionForm(
+            Messages("manage.production.create"),
+            "window-new-production",
+            formData.copy(errors = FormError("thumbnail", Messages("manage.production.error.notFound.thumbnail")) +: formData.errors),
+            routes.Productions.create())
+          )
         } { thumbnailPath =>
           Ok(views.html.page.production.show(productionService.create(
             data.toProductionData(Images.getName(thumbnailPath), Nil)
@@ -65,10 +79,14 @@ class Productions @Inject()(
     )
   }
 
-  def update() = authAction(parse.multipartFormData) { implicit request =>
+  def update(id: Long) = authAction(parse.multipartFormData) { implicit request =>
     productionForm.bindFromRequest().fold(
       formWithErrors => {
-        BadRequest(views.html.production.form.productionForm(formWithErrors))
+        BadRequest(views.html.page.production.productionForm(
+          Messages("manage.production.create"), s"window-edit-production-$id",
+          formWithErrors,
+          routes.Productions.update(id)
+        ))
       },
       data => {
         val newThumbnail = Images.upload("thumbnail_image", s"${data.title}_")

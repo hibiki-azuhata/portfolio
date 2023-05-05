@@ -13,9 +13,7 @@ class IntroductionController @Inject()(
 ) extends Controller {
 
   def index() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index(
-      views.html.page.page.show(pageService.load(ContentType.Manual))
-    ))
+    Ok(views.html.index(views.html.page.page.show(pageService.load(ContentType.Manual))))
   }
 
   def manual() = Action { implicit request: Request[AnyContent] =>
