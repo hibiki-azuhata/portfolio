@@ -66,12 +66,12 @@
                         serverPath: "@helper.CSRF(routes.Images.upload()).url",
                         fileFieldName: 'image',
                         success: function (data, trumbowyg, $modal, values) {
-                            var editor = $('#manage-page-form-@contentType > .page-content');
+                            var editor = $('#manage-page-form-@contentType .page-content');
                             editor.trumbowyg('html', editor.trumbowyg('html') + '<img src="' + data.file + '" alt="' + values.alt + '" width="' + values.width + '">');
                             editor.trumbowyg('closeModal');
                         },
                         error: function() {
-                            console.log("test");
+                            $('#manage-page-form-@contentType .page-content').trumbowyg('closeModal');
                         },
                         imageWidthModalEdit: true
                     },

@@ -2,6 +2,8 @@ package controllers
 
 import controllers.AuthAction.LOGIN_SESSION
 import controllers.AuthWithDemo.DUMMY_SESSION
+import models.User
+import play.api.cache.SyncCacheApi
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.Messages
@@ -12,6 +14,7 @@ import service.UserService.UserData
 import javax.inject.Inject
 
 class UserController @Inject()(
+  cache: SyncCacheApi,
   userService: UserService,
   authAction: AuthAction,
   authDemoAction: AuthWithDemo,
@@ -50,6 +53,17 @@ class UserController @Inject()(
 
   def demoLogin() = Action { implicit request =>
     Ok.withSession(DUMMY_SESSION -> "dummy")
+  }
+
+  def loginInfo() = authDemoAction { implicit request =>
+    val user = request.session.get(LOGIN_SESSION) match {
+      case Some(uuid) if cache.get[Long](uuid).nonEmpty =>
+        cache.get[Long](uuid).flatMap(userService.load)
+      case _ if request.session.get(DUMMY_SESSION).nonEmpty =>
+        Some(User(-1, Messages("user.demo.username"), ""))
+      case _ => None
+    }
+    Ok(views.html.start.loginInfo(user))
   }
 
   def logout() = Action { implicit request =>

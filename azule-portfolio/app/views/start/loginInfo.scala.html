@@ -1,0 +1,23 @@
+@import play.twirl.api.HtmlFormat
+@import window._
+@import models.User
+
+@(user: Option[User])(implicit req: RequestHeader, messages: Messages)
+
+@windowBase(Messages("login.info.title"), "sub-window", "window-login-info"){
+    @HtmlFormat.empty
+} {
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3 login-info-icon">
+            <i class="bi bi-info-circle-fill"></i>
+        </div>
+        <div class="col-9 alert-text">
+            @user.fold(Messages("login.info.alert"))(u => Messages("login.info", u.name))
+        </div>
+    </div>
+    <div class="alert-ok-button">
+        <input type="button" id="login-info-ok" value="@Messages("login.info.ok")">
+    </div>
+</div>
+}

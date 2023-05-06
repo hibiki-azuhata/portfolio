@@ -11,9 +11,11 @@
     <li class="window-menu-content menu-reload">@Html(Messages("window.menu.reload"))</li>
 </ul>
 } {
+    <div class="image-text">@{image.alt}</div>
+    <hr>
+    <img src="@routes.Images.get(s"${image.alt}_image.png")" alt="@{image.alt}" width="100%" height="auto">
+    <hr>
     <div class="d-grid gap-2">
         <input id="button-remove-image-@{image.id}" type="button" class="btn btn-danger" value="@Messages("manage.image.remove")" data-url="@helper.CSRF(routes.Images.remove(image.id))">
     </div>
-    <img src="@routes.Images.get(s"${image.alt}_image.png")" alt="@{image.alt}" width="100%" height="auto">
-    <p>@{image.alt}</p>
 }

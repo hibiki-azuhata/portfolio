@@ -153,7 +153,7 @@ html,body {
 }
 
 .task-bar-start > i {
-    color: #853250;
+    color: navy;
 }
 
 .task-bar-app {
@@ -234,10 +234,24 @@ html,body {
     @include production-item
 }
 
-.alert-icon {
+.manage-image-item {
+    @include production-item
+}
+
+@mixin alert-icon {
     font-size: 60px;
     margin-top: 15px;
+}
+
+.alert-icon {
+    @include alert-icon
     color: red;
+}
+
+.login-info-icon {
+    @include alert-icon
+    text-align: center;
+    color: navy;
 }
 
 .alert-text {
@@ -245,24 +259,31 @@ html,body {
     margin-top: 45px;
 }
 
-#window-alert-unauthorized > .main-window-content {
+#window-alert-unauthorized > .main-window-content,#window-login-info > .main-window-content {
     background-color: #bdbdbd;
     border: 0px;
 }
 
-#alert-unauthorized-ok {
+#alert-unauthorized-ok,#login-info-ok {
     @include windowFrame(2px, #bdbdbd)
     padding: 0 50px;
 }
 
-#alert-unauthorized-ok:active {
+#alert-unauthorized-ok:active,#login-info-ok:active {
     @include windowFrameR(2px, #bdbdbd)
     padding: 0 50px;
 }
 
-.unauthorized-button {
+.alert-ok-button {
     margin-top: 20px;
     text-align: center;
+}
+
+.image-text {
+    margin: 15px;
+    font-size: 24px;
+
+    
 }
 
 .test-square {

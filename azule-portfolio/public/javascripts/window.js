@@ -14,6 +14,7 @@ function registerLoginForm() {
             data: form.serialize(),
             success: function(data) {
                 closeStartMenu();
+                loginInfo();
             },
             error: function(data) {
                 if(data.status != 401) {
@@ -33,6 +34,7 @@ function registerLoginDemo() {
             method: 'POST',
             success: function(data) {
                 closeStartMenu();
+                loginInfo();
             },
             error: function(data) {
                 if(data.status != 401) {
@@ -368,7 +370,7 @@ function registerManageImage() {
                         closeWindow($('#window-image-' + objId));
                         reloadManageImage(registerManageImage);
                     },
-                    error: function() {
+                    error: function(data) {
                         if(data.status != 401) {
                             reloadManageImage(registerManageImage);
                         }
@@ -397,7 +399,7 @@ function registerManageUser() {
                     success: function() {
                         reloadManageUser(registerManageUser);
                     },
-                    error: function() {
+                    error: function(data) {
                         if(data.status != 401) {
                             reloadManageUser(registerManageUser);
                         }
@@ -414,6 +416,21 @@ function registerWork() {
         var id = $(this).attr('id');
         var iconId = id.replace('icon-', '');
         registerDblclick(iconId, jsRoutes.controllers.Productions.show(id.replace('icon-production-', '')));
+    });
+}
+
+function loginInfo() {
+    checkWindowExists('#window-login-info', function(){
+        jsRoutes.controllers.UserController.loginInfo().ajax({
+            success: function(data) {
+                var infoWindow = showWindow(data);
+                infoWindow.resizable("destroy");
+                infoWindow.find('.window-title-page').remove();
+                $('#login-info-ok').click(function(){
+                    closeWindow(infoWindow);
+                });
+            }
+        });
     });
 }
 
@@ -473,8 +490,6 @@ $(function(){
                             closeWindow(alertWindow);
                         });
                     }
-
-
                 });
             });
         }

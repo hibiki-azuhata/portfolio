@@ -35,6 +35,7 @@ POST    /login                      controllers.UserController.login()
 POST    /login/demo                 controllers.UserController.demoLogin()
 POST    /logout                     controllers.UserController.logout()
 GET     /alert                      controllers.UserController.demoAlert()
+GET     /loginInfo                  controllers.UserController.loginInfo()
 
 # Assets
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
