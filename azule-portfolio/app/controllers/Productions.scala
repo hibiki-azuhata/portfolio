@@ -37,9 +37,10 @@ class Productions @Inject()(
       BadRequest(views.html.page.production.productionForm(Messages("manage.production.create"), "window-new-production", productionForm, routes.Productions.create()))
     )( production =>
       Ok(views.html.page.production.productionForm(
-        Messages("manage.production.create"), s"window-edit-production-$id",
+        Messages("manage.page", production.title), s"window-edit-production-$id",
         productionForm.fill(ProductionInfoData.toProductionData(production)),
-        routes.Productions.update(id)
+        routes.Productions.update(id),
+        Some(routes.Productions.remove(id))
       ))
     )
   }
@@ -55,7 +56,6 @@ class Productions @Inject()(
   def create() = authAction(parse.multipartFormData) { implicit request =>
     productionForm.bindFromRequest().fold(
       formWithErrors => {
-        println(formWithErrors("id").value)
         BadRequest(views.html.page.production.productionForm(
           Messages("manage.production.create"),
           "window-new-production",
@@ -87,7 +87,8 @@ class Productions @Inject()(
         BadRequest(views.html.page.production.productionForm(
           Messages("manage.production.create"), s"window-edit-production-$id",
           formWithErrors,
-          routes.Productions.update(id)
+          routes.Productions.update(id),
+          Some(routes.Productions.remove(id))
         ))
       },
       data => {
@@ -99,5 +100,10 @@ class Productions @Inject()(
         }
       }
     )
+  }
+
+  def remove(id: Long) = authAction { implicit request =>
+    productionService.remove(id)
+    Ok
   }
 }

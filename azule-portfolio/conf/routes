@@ -11,6 +11,7 @@ POST    /productions/update/:id     controllers.Productions.update(id: Long)
 GET     /productions/add            controllers.Productions.add()
 GET     /productions/edit/:id       controllers.Productions.edit(id: Long)
 GET     /productions/:id            controllers.Productions.show(id: Long)
+POST    /productions/remove/:id     controllers.Productions.remove(id: Long)
 
 # Pages
 GET     /pages                      controllers.Pages.index()

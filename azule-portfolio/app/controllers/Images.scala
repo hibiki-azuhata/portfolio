@@ -26,6 +26,9 @@ class Images @Inject()(
   }
 
   def remove(id: Long) = authAction { implicit request =>
+    imageService.load(id).foreach { image =>
+      new java.io.File(s"$IMAGE_PATH/${Images.getName(image.url)}").delete()
+    }
     imageService.delete(id)
     Ok
   }

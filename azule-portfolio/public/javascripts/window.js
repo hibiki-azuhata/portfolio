@@ -191,12 +191,23 @@ function reloadManageUser(registerAction) {
     });
 }
 
-function reloadManageImage() {
+function reloadManageProduction(registerAction) {
+    jsRoutes.controllers.Productions.index().ajax({
+        success: function(data) { reloadWindow(data); },
+        error: function(data) {
+            if(data.status != 401) {
+                reloadWindow(data, registerAction);
+            }
+        }
+    });
+}
+
+function reloadManageImage(registerAction) {
     jsRoutes.controllers.Images.index().ajax({
         success: function(data) { reloadWindow(data); },
         error: function(data) {
             if(data.status != 401) {
-                reloadWindow(data);
+                reloadWindow(data, registerAction);
             }
         }
     });
@@ -340,6 +351,21 @@ function registerManageProduction() {
             var objId = id.replace('icon-edit-production-', '');
             registerDblclick(iconId, jsRoutes.controllers.Productions.edit(objId), function() {
                 registerManageProductionForm(objId, jsRoutes.controllers.Productions.update(objId));
+                $('#button-remove-production-' + objId).click(function(){
+                    $.ajax({
+                        url: $(this).data('url'),
+                        method: 'POST',
+                        success: function() {
+                            closeWindow($('#window-edit-production-' + objId));
+                            reloadManageProduction(registerManageProduction);
+                        },
+                        error: function(data) {
+                            if(data.status != 401) {
+                                reloadManageProduction(registerManageProduction);
+                            }
+                        }
+                    });
+                });
             });
         }
     });
@@ -474,7 +500,7 @@ $(function(){
     registerDblclick('work', jsRoutes.controllers.IntroductionController.work(), registerWork);
     registerDblclick('about', jsRoutes.controllers.IntroductionController.about());
 
-    $(document).on('selectstart', function(){
+    $('.start-menu-content.display-icon').on('selectstart', function(){
         return false;
     });
 

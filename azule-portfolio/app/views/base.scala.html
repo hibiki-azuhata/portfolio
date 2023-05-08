@@ -9,7 +9,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@@200&display=swap" rel="stylesheet">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/app_icon.png")">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -25,13 +25,13 @@
         <div class="main-display">
             <div class="main-display-icons">
                 @displayIcon("manual", Messages("window.name.manual")){
-                    <div class="test-square"></div>
+                    <img src="@routes.Assets.versioned("images/manual.png")" style="width: 100px; height: 100px;" alt="manual">
                 }
                 @displayIcon("work", Messages("window.name.work")){
-                    <div class="test-square"></div>
+                    <img src="@routes.Assets.versioned("images/work.png")" style="width: 100px; height: 100px;" alt="work">
                 }
                 @displayIcon("about", Messages("window.name.about")){
-                    <div class="test-square"></div>
+                    <img src="@routes.Assets.versioned("images/about.png")" style="width: 100px; height: 100px;" alt="about">
                 }
             </div>
 

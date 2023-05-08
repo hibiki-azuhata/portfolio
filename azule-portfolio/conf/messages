@@ -25,6 +25,7 @@ manage.page.submit=更新
 manage.production.create=新規作成
 manage.production.title=タイトル
 manage.production.thumbnail=サムネイル画像
+manage.production.remove=削除
 
 manage.user.table.id=#
 manage.user.table.username=ユーザー名

@@ -1,7 +1,7 @@
 @import helper._
 @import window._
 @import service.ProductionService.ProductionInfoData
-@(title: String, clazz: String, form: Form[ProductionInfoData], formCall: Call)(implicit request: RequestHeader, messages: Messages)
+@(title: String, clazz: String, form: Form[ProductionInfoData], formCall: Call, removeCallOpt: Option[Call] = None)(implicit request: RequestHeader, messages: Messages)
 
 @windowBase(title, "main-window", clazz){
 <ul>
@@ -42,6 +42,13 @@
                     <input class="btn btn-primary" type="submit" value="@Messages("manage.user.submit")">
                 </div>
             </div>
+            @if(removeCallOpt.nonEmpty) {
+                <div class="mt-3">
+                    <div class="d-grid gap-2">
+                        <input id="button-remove-production-@{form("id").value.fold("")(id => id)}" type="button" class="btn btn-danger" value="@Messages("manage.production.remove")" data-url="@helper.CSRF(removeCallOpt.get)">
+                    </div>
+                </div>
+            }
         </div>
     }
     <script>
